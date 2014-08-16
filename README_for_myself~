@@ -1,0 +1,8 @@
+The PolyDB will be divided in two due to max size of github.
+
+The following files will still be maintained by my SVN repository at home:
+- polydb/stable/sample_data/complete
+- polydb/old
+- polydb/README_for_myself
+- polydb/README_for_broad_users.txt
+

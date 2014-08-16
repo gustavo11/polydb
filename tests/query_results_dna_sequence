@@ -1,0 +1,182 @@
+<div class="article">
+ 	<h2><span>Query result</a></span></h2>
+ 	<p>
+
+ 	
+ 	[% file_error_list %]
+ 	<script src="/templates/casa/javascript/boxover.js"></script>
+
+  <form action="[% cgi_base_dir %]/dump_sequence.cgi" method="post" enctype="multipart/form-data">
+  <input name="query" value="[% query %]" type="hidden">
+  <input name="format" value="tab" type="hidden">
+  <input type=submit name="Download results" value="Download tabular data">
+  <input name="SID" type="hidden" value="[% SID %]">
+
+</FORM>
+
+ 	[% IF num_records > 0 %]
+
+  <form action="[% cgi_base_dir %]/dump_sequence.cgi" method="post" enctype="multipart/form-data">
+  <input name="query" value="[% query %]" type="hidden">
+  <input name="format" value="fasta" type="hidden">
+  <input type=submit name="Download fasta" value="Download gene sequences (FASTA format)">
+  <input name="SID" type="hidden" value="[% SID %]">
+
+</FORM>
+  [% END %]
+[% IF R_ANALYSIS == 1 %]
+
+  <form action="[% cgi_base_dir %]/analyze_data.cgi" method="post" enctype="multipart/form-data">
+  <input name="query" value="[% query %]" type="hidden">
+  <input name="SID" type="hidden" value="[% SID %]">
+  <input name="analysis page" type="submit" value="Analyze Data">
+  </form>
+[% END %]
+ 
+<form action="[% cgi_base_dir %]/execute_query.cgi" method="post" enctype="multipart/form-data">
+ 	
+ 	
+  <!-- If at least one record returned by the query -->
+ 	[% IF num_records > 0 %]
+
+  	<!-- If number of records returned is less then maximum number of records per page -->
+  	<!-- Then there is no need to show next and previous buttons -->
+ 	
+ 		[% IF rows > num_records %]
+ 			[% limit + 1 %]-[% limit + num_records %] of [% num_records %]
+ 			
+ 			
+ 		<!-- If this is the last page to be shown --> 	
+ 		[% ELSIF  limit <= num_records && (limit + rows) > num_records%]
+
+		 	[% limit + 1 %]-[% num_records %] of [% num_records %]
+
+ 			<BR>
+
+ 			[% IF limit > 0 %]
+ 				<input type=submit name="previous" value="Show Previous [% rows %]" />
+ 			[% END %]
+
+ 		
+ 		[% ELSE %]
+ 			[% limit + 1 %]-[% limit + rows %] of [% num_records %]
+ 			
+ 			<BR>
+ 	
+ 			[% IF limit > 0 %]
+ 				<input type=submit name="previous" value="Show Previous [% rows %]" />
+ 			[% END %]
+    
+ 			[% IF limit <= num_records && (limit + rows) <= num_records %]
+ 				<input type=submit name="next" value="Show Next [% rows %]" />
+ 			[% END %]
+ 			
+ 			
+ 		[% END %]
+ 		
+ 	<!-- If no results found -->
+  [% ELSE %]
+     No results found!!!
+  [% END  %]
+  
+
+  <input name="limit" value="[% limit %]" type="hidden">
+  <input name="num_records" value="[% num_records %]" type="hidden">
+  <input name="query" value="[% query %]" type="hidden">
+  <input name="query_count" value="[% query_count %]" type="hidden">
+  <input name="gene_name" value="gene_name" type="hidden">
+
+	<input name="SID" value="[% SID %]" type="hidden">
+</FORM> 
+
+<form action="[% cgi_base_dir %]/download_dna_sequence.cgi" method="post" enctype="multipart/form-data">
+  
+ 	<table>
+ 		<tr>
+ 		  
+ 		 	<!-- Patient ID -->
+ 				<th><span title="header=[<img src='/templates/casa/javascript/info.gif' 
+style='vertical-align:middle'>] body=[Patient ID]" style="cursor:pointer">Patient ID</span> </th>
+
+ 			<!-- Geolocation -->
+ 				<th><span title="header=[<img src='/templates/casa/javascript/info.gif' 
+style='vertical-align:middle'>] body=[Geolocation]" style="cursor:pointer">Geolocation</span></th>
+
+ 			<!-- Study arm -->
+ 				<th><span title="header=[<img src='/templates/casa/javascript/info.gif' style='vertical-align:middle'>] body=[Study arms code listed below]" style="cursor:pointer">Study arm</span></th>
+
+
+ 			<!-- Hours until clearance -->
+ 				<th><span title="header=[<img src='/templates/casa/javascript/info.gif' 
+style='vertical-align:middle'>] body=[Hours until clearance]" style="cursor:pointer">HUC</span></th>
+
+ 			<!-- Treatment outcome -->
+ 				<th><span title="header=[<img src='/templates/casa/javascript/info.gif' style='vertical-align:middle'>] 
+ 				body=[
+ 				<b>ACPR</b> - Adequate clinical and parasitological response <BR> 
+ 				<b>ETF</b>  - Early treatment failure <BR>
+ 				<b>LTF</b>  - Late treatment failture <BR>
+ 				<b>LPF</b>  - Late parasitological failure <BR> 
+ 				<b>LF</b>  - Lost to follow up <BR>
+ 				]" 
+ 				style="cursor:pointer">Treatment outcome</span></th>
+ 				
+ 				
+ 			<!-- Sample collection date -->
+ 				<th><span title="header=[<img src='/templates/casa/javascript/info.gif' style='vertical-align:middle'>] body=[Sample collection date]" style="cursor:pointer">Sample collection date</span></th> 				
+
+ 			<!-- Infection type -->
+ 				<th><span title="header=[<img src='/templates/casa/javascript/info.gif' style='vertical-align:middle'>] body=[Infection type]" style="cursor:pointer">Infection type</span></th>
+
+
+ 			<!-- Gene name -->
+ 				<th><span title="header=[<img src='/templates/casa/javascript/info.gif' 
+style='vertical-align:middle'>] body=[Gene name]" style="cursor:pointer">Gene name</span></th>
+
+ 			 			
+ 		</tr>
+ 		 		
+ 		<!-- table with seq error info -->
+ 		[% USE table(results_table, rows=8) %]
+ 		<tr>
+ 		[% FOREACH cols = table.cols %]
+      [% cont = 1 %]
+
+ 			[% FOREACH item = cols  %]
+ 			  [% IF cont == 1 %]
+ 			    [% sample = item %]
+ 			  [% END %]
+ 			  
+ 			  [% IF cont == 8 %]
+  				<td><b><a href=[% cgi_base_dir %]/gene_info.cgi?SID=[% SID %]&sample=[% sample %]&gene=[% item %]>[% item %]</a></b></td>
+ 				[% ELSE %]
+  				<td><b>[% item %]</b></td>			
+ 				[% END %]
+ 				
+        [% cont = cont + 1 %]
+ 				
+ 			[% END %]
+ 		</tr>
+ 		[% END %]				
+ 		</table>	
+ 		
+</form>
+ <BR>
+  <b>List of study arms</b>
+  <table>
+ 		<tr><td>1</td> <td> 6 mg/kg ART - 7 days </td></tr>
+ 		<tr><td>2</td> <td> Split 6 mg/kg ART - 7 days </td></tr> 
+ 		<tr><td>3</td> <td> 8 mg/kg ART - 3 days, 15 mg/kg MQ day 3 & 10 mg/kg MQ day 4 </td></tr> 
+ 		<tr><td>4</td> <td> Split 8 mg/kg ART - 3 days, 15 mg/kg MQ day & 10 mg/kg MQ day 4 </td></tr>
+ 		<tr><td>5</td> <td> 2 mg/kg ART - 7 days </td></tr>
+ 		<tr><td>6</td> <td> 4 mg/kg ART - 7 days </td></tr>
+ 		<tr><td>7</td> <td> 6 mg/kg ART - 7 days </td></tr>
+ 		<tr><td>8</td> <td> 2 mg/kg ART - 7 days </td></tr>
+ 		<tr><td>9</td> <td> 4 mg/kg ART - 3 days, 15 mg/kg MQ day 3 & 10 mg/kg MQ day 4 </td></tr> 
+ 		<tr><td>10</td> <td> 2 mg/kg ART - 7 days </td></tr>
+ 		<tr><td>11</td> <td> 4 mg/kg ART - 7 days </td></tr>
+ 		<tr><td>12</td> <td> 30 mg/kg quinine 4 mg/kg doxycycline - 7 days </td></tr>
+  </table>
+  
+</p>
+</div>

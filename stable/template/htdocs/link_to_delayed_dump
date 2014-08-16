@@ -1,0 +1,16 @@
+<div class="article">
+ 	<h2><span>Preparing Data</a></span></h2><html>
+ 	
+ 	It will take some minutes to prepare the downloadable file. <BR>
+ 	Progress: [% progress %]% done ....<BR>
+ 	<BR>
+
+  <form action="[% cgi_base_dir %]/check_dump_file_progress.cgi" method="post" enctype="multipart/form-data">
+  <input name="num_records" value="[% num_records %]" type="hidden">  
+  <input type=submit name="Refresh progress" value="Refresh progress">
+  <input name="SID" type="hidden" value="[% SID %]">
+  </FORM>
+ 	 	
+	<p>
+</div>
+

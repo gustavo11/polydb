@@ -1,0 +1,66 @@
+
+<div class="article">
+ 	<h2><span>Query</a></span></h2><html><br>
+
+<script language="javascript">
+
+function OnUnload(){
+  //document.forms[0].chrom_coord_start.value    = "";
+  //document.forms[0].chrom_coord_end.value      = "";
+  //document.forms[0].chrom_coord_start.disabled = true;
+  //document.forms[0].chrom_coord_end.disabled   = true;
+  //document.forms[0].chrom.selectedIndex = 0;
+  return true;
+}
+
+function OnChromChange(dropdown){
+    //var myindex  = dropdown.selectedIndex;
+    //var SelValue = dropdown.options[myindex].value;
+
+    //if( SelValue != "all" ){
+    //   document.forms[0].chrom_coord_start.disabled = false;
+    //   if( document.forms[0].chrom_coord_start != "" ){
+    //     document.forms[0].chrom_coord_start.disabled = false;
+    //   }
+     
+    //}else{
+    //   document.forms[0].chrom_coord_start.value    = "";
+    //   document.forms[0].chrom_coord_end.value      = "";
+    //   document.forms[0].chrom_coord_start.disabled = true;
+    //   document.forms[0].chrom_coord_end.disabled   = true;
+    //}
+    
+    return true;
+}
+
+function OnChromCoordStartChange(inputbox){
+
+ //   if( inputbox.value == "" ){
+ //      document.forms[0].chrom_coord_end.value      = "";
+ //      document.forms[0].chrom_coord_end.disabled   = true;
+ //   }else{
+ //      document.forms[0].chrom_coord_end.disabled   = false;
+ //   }
+    
+ //   return true;
+}
+
+ 
+</script>
+
+
+
+<script src="/templates/casa/javascript/regex_validation.js" type="text/javascript"></script>
+
+<form action="[% cgi_base_dir %]/execute_query.cgi" method="post" enctype="multipart/form-data" onsubmit="return validate_form(this)">  
+  <input name="Submit" value="Submit query!" type="submit">
+  <BR>
+  <BR>
+
+  [% INCLUDE DatabaseSpecific_query_database %]
+
+  <input name="SID" value="[% SID %]" type="hidden">
+
+  <input name="Submit" value="Submit query!" type="submit">
+  </form>
+</div>

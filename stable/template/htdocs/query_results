@@ -1,0 +1,145 @@
+<div class="article">
+ 	<h2><span>Query result</a></span></h2>
+ 	<p>
+ 	
+ 	[% file_error_list %]
+ 	<script src="/templates/casa/javascript/boxover.js"></script>
+
+  <!-- If at least one record returned by the query -->
+ 	[% IF num_records > 0 %]
+
+ 	
+<script language="javascript">
+
+function hide_columns_tbl(){
+            var sel_samples_str="[% do_not_show %]";
+            var sel_sample_num_str = sel_samples_str.replace(/s/g,"");
+            var sel_samples=sel_sample_num_str.split("%");
+
+
+            var samples_to_remove = sel_samples.length - 1;
+            //alert("Number of samples to remove:" + samples_to_remove );
+            
+	    var table_name = "mainTbl";            
+            var tbl = document.getElementById(table_name);            
+            if (tbl != null) {
+            	for (var si = 0; si < samples_to_remove; si++){
+            		//alert("Removing sample:" + sel_samples[si] );
+            		col = 6 + ( sel_samples[si] * 2 ) - 1;
+	        
+            		for (var i = 0; i < tbl.rows.length; i++) {
+            			for (var j = 0; j < tbl.rows[i].cells.length; j++) {
+                        		// Removing col with genotype and substitution type
+                        		if ( j == col || j == (col + 1) )
+                        			tbl.rows[i].cells[j].style.display = "none";
+				}
+                        }
+                }	        
+	    }else{
+	    	alert("Unable to find table " + table_name + " on current HTML");
+	    }
+	    
+	    
+	    var table_name = "NTTbl";
+            var tbl = document.getElementById( table_name );            
+            if (tbl != null) {
+            	for (var si = 0; si < samples_to_remove; si++){
+            		//alert("Removing sample:" + sel_samples[si] );
+            		col = 4 + ( sel_samples[si] * 1 ) - 1;
+            		//alert("Col:" + col );
+            		//col = 4;
+            		for (var i = 0; i < tbl.rows.length; i++) {
+            			for (var j = 0; j < tbl.rows[i].cells.length; j++) {
+                        	//tbl.rows[i].cells[j].style.display = "";
+
+            			// Removing col with genotype and substitution type
+                        		if ( j == col ){
+	            				//alert("Value:" + tbl.rows[i].cells[j].innerHTML );
+                        			tbl.rows[i].cells[j].style.display = "none";
+                        		}
+                        	}
+                        }
+                }	        
+	    }else{
+	    	alert("Unable to find table " + table_name + " on current HTML");
+	    }
+	    
+	    
+            
+}
+
+window.onload = hide_columns_tbl;
+
+ 
+</script> 	
+
+  <form action="[% cgi_base_dir %]/dump_query_data.cgi" method="post" enctype="multipart/form-data">
+  <input name="num_records" value="[% num_records %]" type="hidden">
+  <input name="query" value="[% query %]" type="hidden">
+  <input type=submit name="Download results" value="Download">
+  <input name="SID" type="hidden" value="[% SID %]">
+  </FORM>
+ 
+  <form action="[% cgi_base_dir %]/execute_query.cgi" method="post" enctype="multipart/form-data">
+ 	
+ 	
+  	<!-- If number of records returned is less then maximum number of records per page -->
+  	<!-- Then there is no need to show next and previous buttons -->
+ 	
+ 		[% IF rows > num_records %]
+ 			[% limit + 1 %]-[% limit + num_records %] of [% num_records %]
+ 			
+ 			
+ 		<!-- If this is the last page to be shown --> 	
+ 		[% ELSIF  limit <= num_records && (limit + rows) > num_records%]
+
+		 	[% limit + 1 %]-[% num_records %] of [% num_records %]
+
+ 			<BR>
+
+ 			[% IF limit > 0 %]
+ 				<input type=submit name="previous" value="Show Previous [% rows %]" />
+ 			[% END %]
+
+ 		
+ 		[% ELSE %]
+ 			[% limit + 1 %]-[% limit + rows %] of [% num_records %]
+ 			
+ 			<BR>
+ 	
+ 			[% IF limit > 0 %]
+ 				<input type=submit name="previous" value="Show Previous [% rows %]" />
+ 			[% END %]
+    
+ 			[% IF limit <= num_records && (limit + rows) <= num_records %]
+ 				<input type=submit name="next" value="Show Next [% rows %]" />
+ 			[% END %]
+ 			
+ 			
+ 		[% END %]
+ 	  
+ 	  <BR><BR>	
+ 	  <b>Not showing samples</b>: [% do_not_show_str %]<BR>
+ 	  
+ 	   		
+ 	  [% INCLUDE DatabaseSpecific_query_results %] 
+
+  <input name="limit" value="[% limit %]" type="hidden">
+  <input name="num_records" value="[% num_records %]" type="hidden">
+  <input name="query" value="[% query %]" type="hidden">
+  <input name="query_count" value="[% query_count %]" type="hidden">
+    
+	<input name="SID" value="[% SID %]" type="hidden">
+</FORM>
+
+
+   <!-- If no results found -->
+  	
+  [% ELSE %]
+     No results found!!!
+  [% END  %]
+   		
+ <BR>
+  
+</p>
+</div>

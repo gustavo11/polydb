@@ -1,0 +1,142 @@
+<head>
+<SCRIPT LANGUAGE="JavaScript">
+
+<!-- This script and many more are available free online at -->
+<!-- The JavaScript Source!! http://javascript.internet.com -->
+
+<!-- Begin
+function getCookie(name){
+var cname = name + "=";               
+var dc = document.cookie;             
+if (dc.length > 0) {              
+begin = dc.indexOf(cname);       
+if (begin != -1) {           
+begin += cname.length;       
+end = dc.indexOf(";", begin);
+if (end == -1) end = dc.length;
+return unescape(dc.substring(begin, end));
+   } 
+}
+var blank = "";
+return blank;
+}
+function setCookie(name, value, expires) {
+document.cookie = name + "=" + escape(value) + 
+((expires != null) ? "; expires=" + expires.toGMTString() : "")
++ "; path=/";
+}
+function setName() {
+var expdate = new Date ();
+expdate.setTime (expdate.getTime() + (24 * 60 * 60 * 1000 * 365));
+var prompt=i = document.Mail.name.value;
+setCookie("name", i, expdate);
+}
+function getName() {
+if(getCookie("name") != null) {
+document.Mail.Name.value = getCookie("emailname");
+   }
+}
+function getInfo() {
+var now= new Date();
+document.Mail.Info.value = "Browser: " + navigator.userAgent;
+document.Mail.Info.value += "Date:" + now;
+}
+function checkMultiple() {
+if (getCookie("emailsent") == 'true') return true;
+else return false;
+}
+function process() {
+setCookie("emailsent", "true");
+with (document.Mail) {
+if (Subject.selectedIndex == 1) action = "mailto:gcerqueira@som.umaryland.edu;cjaco002@umaryland.edu?subject=Comment";
+else if (Subject.selectedIndex == 2) action = "mailto:gcerqueira@som.umaryland.edu;cjaco002@umaryland.edu?subject=Question";
+else if (Subject.selectedIndex == 3) action = "mailto:gcerqueira@som.umaryland.edu;cjaco002@umaryland.edu?subject=Suggestion";
+else if (Subject.selectedIndex == 4) action = "mailto:gcerqueira@som.umaryland.edu?subject=Bug";
+else action = "mailto:gcerqueira@som.umaryland.edu;cjaco002@umaryland.edu?subject=Other";
+   }
+}
+function formCheck() {
+var passed = false;
+with (document.Mail) {
+if (Subject.selectedIndex == 0) { 
+alert("Please pick a subject.");
+Subject.focus();
+}
+else if (Name.value == "") {
+alert("Please inlcude your name.");
+Name.focus();
+}
+else if (checkMultiple()) {
+if (confirm("You just sent an e-mail from this form, are you sure you want to send another?")) {
+process();
+passed = true;
+   }
+}
+else {
+process();
+passed = true;
+   }
+}
+return passed;
+}
+// End -->
+</SCRIPT>
+</head>
+<div class="article">
+ 	<h2><span>Contact us</a></span></h2><html>
+<br>
+<FORM NAME = "Mail" ACTION = "mailto:gustavo@broadinstitute.org?subject=TJS - Form" METHOD = "POST" ENCTYPE = "text/plain" onSubmit="return formCheck();">
+<INPUT TYPE = "hidden" SIZE = 0 NAME = "Info">
+<TABLE BORDER = 0 CELLPADDING = 10 CELLSPACING = 0>
+<TR><TD>
+Name:  
+<INPUT TYPE = "text" NAME = "Name" onChange = "setName()">
+</TD><TD ALIGN = RIGHT >
+Subject:  
+<SELECT NAME = "Subject">
+<OPTION SELECT>Please Select A Subject</OPTION>
+<OPTION>1. Comment</OPTION>
+<OPTION>2. Question</OPTION>
+<OPTION>3. Suggestion</OPTION>
+<OPTION>4. Bug</OPTION>
+<OPTION>5. None of the above</OPTION>
+</SELECT>
+</TD></TR>
+
+<TR>
+<TD COLSPAN = 2>
+Tell us what you think:
+<BR><BR>
+<TEXTAREA NAME = "Comments, Suggestions" COLS = 50 ROWS = 6>
+</TEXTAREA>
+</TD>
+</TR>
+</TABLE>
+
+<CENTER>
+<TABLE>
+<TR>
+<TD align=center>
+<INPUT TYPE = "submit" VALUE = "Generate e-mail and open it in the default client"><BR><BR>
+<b>Please, after clicking the button above you'll still need to submit the e-mail through your default e-mail client</b>
+</TD>
+</TR>
+</TABLE>
+</FORM>
+<SCRIPT LANGUAGE="JavaScript">
+<!-- Begin
+getInfo();
+getName();
+// End -->
+</SCRIPT>
+</FONT>
+</CENTER>
+
+<p><center>
+<font face="arial, helvetica" size="-2">Free JavaScripts provided<br>
+by <a href="http://javascriptsource.com">The JavaScript Source</a></font>
+</center><p>
+
+</form>
+</div>
+

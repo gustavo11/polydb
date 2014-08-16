@@ -1,0 +1,13 @@
+[% INCLUDE header %]
+
+<!-- <b> User input from HTML form </b><BR> 
+[% userInputsFromHtmlForm %]
+
+<BR><b> Script generated values </b><BR> 
+[% scriptGeneratedValues %] -->
+
+[% INCLUDE $core %]
+
+<!-- This is the current tab state: [% tab_state %] --> 
+
+[% INCLUDE footer %]        

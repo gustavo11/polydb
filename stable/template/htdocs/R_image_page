@@ -1,0 +1,5 @@
+<div class="article">
+ 	<h2><span>Results</a></span></h2><html>
+	<br>
+	<IMG SRC="/templates/casa/results/arc3_hist_analysis.[% SID %].png">
+</div>

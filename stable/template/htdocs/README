@@ -1,0 +1,39 @@
+PolydDB - Site map
+==================
+
+Main structure
+--------------
+casa_base:
+	includes header  (static)
+	includes core    (dynamic)
+	includes footer  (static, contains left panel)
+
+
+CORE
+----
+
+Tab Home
+home_menu.cgi -> home_menu
+
+Tab Query database
+query_database.cgi -> query_database 
+	Buttone "Submit query!"
+	execute_query.cgi -> query_results
+
+		Button "Analyze data"
+		analyze_data.cgi    -> analyze_page
+			Button "send"
+			R_image_page.cgi	-> R_image_page
+
+		Button "Download"
+		dump_query_data.cgi -> link_to_dump
+
+
+Tab Support
+support_menu.cgi    -> support_menu
+
+Tab Contact us
+contact_menu.cgi    -> contact_menu
+
+Tab References
+references_menu.cgi -> references_menu

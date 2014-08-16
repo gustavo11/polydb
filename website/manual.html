@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>PolyDB - VCF to PostgreSQL + Web Front-End</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 60px;
+      }
+
+      /* Custom container */
+      .container {
+        margin: 0 auto;
+        max-width: 1000px;
+      }
+      .container > hr {
+        margin: 60px 0;
+      }
+
+      /* Main marketing message and sign up button */
+      .jumbotron {
+        margin: 80px 0;
+        text-align: center;
+      }
+      .jumbotron h1 {
+        font-size: 100px;
+        line-height: 1;
+      }
+      .jumbotron .lead {
+        font-size: 24px;
+        line-height: 1.25;
+      }
+      .jumbotron .btn {
+        font-size: 21px;
+        padding: 14px 24px;
+      }
+
+      /* Supporting marketing content */
+      .marketing {
+        margin: 60px 0;
+      }
+      .marketing p + h4 {
+        margin-top: 28px;
+      }
+
+
+      /* Customize the navbar links to be fill the entire space of the .navbar */
+      .navbar .navbar-inner {
+        padding: 0;
+      }
+      .navbar .nav {
+        margin: 0;
+        display: table;
+        width: 100%;
+      }
+      .navbar .nav li {
+        display: table-cell;
+        width: 1%;
+        float: none;
+      }
+      .navbar .nav li a {
+        font-weight: bold;
+        text-align: center;
+        border-left: 1px solid rgba(255,255,255,.75);
+        border-right: 1px solid rgba(0,0,0,.1);
+      }
+      .navbar .nav li:first-child a {
+        border-left: 0;
+        border-radius: 3px 0 0 3px;
+      }
+      .navbar .nav li:last-child a {
+        border-right: 0;
+        border-radius: 0 3px 3px 0;
+      }
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="ico/favicon.png">
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <div class="masthead">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="container">
+              <ul class="nav">
+
+                <li><a href="index.html">Home</a></li>              
+                <li><a href="about.html">About</a></li>
+                <li><a href="sample.html">Sample</a></li>                
+                <li><a href="download.html">Download</a></li>
+                <li class="active"><a href="#">Manual</a></li>                
+                <li><a href="contact.html">Contact</a></li>
+                              
+              </ul>
+            </div>
+          </div>
+        </div><!-- /.navbar -->
+      </div>
+
+      
+<h3> PolyDB v1.0 - Oct 16, 2013 </h3><BR>
+PolyDB is a software package that converts genotype calls stored in VCF files into a PostgreSQL database and a custom made web front-end, al
+lowing the easy exploration of genetic variatons by users who are not familiar with tools to query the original VCF files. The availability 
+of the variants through a web interface also allows remotely located collaborators to query and download data.
+<hr>
+<h3> 1. INSTALLING </h3><BR>
+The setup of PolyDB involves taking note of directory paths and configuration values that are specific to the user's host. Those values shou
+ld be then tranfered this information to PolyDB's configuration file.
+Any information that should remembered and later transfered to PolyDB configuration file will be indicated by the following disclaimer:
+**This information should be provided in PolyDB's configuration file as 'variable_name'** 
+where 'variable_name' indicates the name of the variable in the PolyDB configuration file where the information should be transfered to.
+ 
+<h4> 1.1 - Server requirements </h4><BR>
+Identify the UNIX/Linux server that will host PolyDB.
+ 
+This server should have the following applications installed:
+<li>
+<ul> PostgreSQL server. Follow installation instructions here: http://www.postgresql.org/docs/9.1/static/admin.html </ul>
+</li>
+<li>
+<ul> Apache web server. Follow installation instructions here: http://httpd.apache.org/docs/2.4/install.html </ul>
+</li>
+<li>
+<ul> Perl interpreter. Usually already installed as part of UNIX/Linux default environment.  </ul>
+</li>
+<li>
+<ul> R language interpreter. Follow installation instructions here: http://cran.r-project.org/doc/manuals/r-release/R-admin.html  </ul>
+</li>
+<li>
+<ul> JBrowse (Optional). Follow installation instructions here: http://jbrowse.org/install </ul>
+</li>
+PostgreSQL, Apache, R and Perl can be also installed via package managers such as Yum, APT and Synaptic (the later being a graphical interfa
+ce for APT package manager).
+For example, using APT the installation of those applications can be accomplished by issuing the following commands:
+<code>$ sudo apt-get install apache2</code><BR>
+<code>$ sudo apt-get install postgresql</code><BR>
+<code>$ sudo apt-get install libpq-dev</code><BR>
+<code>$ sudo apt-get install perl</code><BR>
+<code>$ sudo apt-get install r-base-core</code><BR>
+<h4> 1.5 - Download PolyDB </h4><BR>
+Create a directory 
+Download either the stable version of PolyDB from
+http://www.broadinstitute.org/polydb/download/polydb_current.tar.gz
+or the version containing the latest additions from Github:
+<h4> 1.2 - Configuring PostgreSQL </h4><BR>
+<h5> 1.2.1 - Identify directory path to PostgreSQL binaries </h5><BR>
+Issue the command below to identify the directory where PostgreSQL binaries are located in your system:
+<code>$ ps -ef | grep postgres | grep -v 'postgres:' | grep -v 'grep'</code><BR>
+Example output: 
+<code>$ postgres  1759     1  0 Sep14 ?        00:00:29 /usr/lib/postgresql/9.1/bin/postgres -D /var/lib/postgresql/9.1/main -c config_file=
+/etc/postgresql/9.1/main/postgresql.conf</code><BR>
+In the example above, the PostgreSQL binaries are located in /usr/lib/postgresql/9.1/bin
+**The full path to PostgreSQL binaries should be provided in PolyDB's configuration file as 'psql_bin_dir'** 
+<h5> 1.2.2 - Create or identify a database in the local instance of PostgreSQL that will be used by PolyDB to store the variant calls </h5><
+BR>
+We recommended a separate database to store PolyDB tables, but any previously created database can be used. The newly created or chosen data
+base has to be provided to PolyDB through its configuration file together with a user name and password associated to an account with write 
+access to that database, including 'create table' permission.
+If you prefer to create a new database, please see below an example on how to create a database named 'polydb'  accessible by the user 'john
+':
+<li>
+<ul> Issue the following command: </ul>
+</li>
+<code>$ sudo -u postgres createuser -P john</code><BR>
+<li>
+<ul> A prompt will appear requesting a password. Please provide one. It doesn't have to be the same password used in authentication of a log
+in into the Linux/Unix system. </ul>
+</li>
+Answer the next prompted question by indicating that the user is not a super user, but it can create tables and additional roles.
+Then issue the following commands
+<code>$ sudo -u postgres psql  -c "CREATE DATABASE polydb" </code><BR>
+<code>$ sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE polydb to john";</code><BR>
+In the commands above the word jonh should be sustituted by your user name.
+**The database name should be provided in PolyDB's configuration file as 'psql_database_name'** 
+**The user name should be provided in PolyDB's configuration file as 'psql_database_user'** 
+**The user password should be provided in PolyDB's configuration file as 'psql_database_password'** 
+<h5> 1.2.3 - Identifies which port psql is listening to </h5><BR>
+Issue the command below to identify the number of the port psql daemon is listening to:
+<code>$ pg_lsclusters</code><BR>
+**This port number should be provided in PolyDB's configuration file as 'psql_port'** 
+<h4> 1.3 - Configuring Apache </h4><BR>
+<h5> 1.3.1 Identify the user associated to httpd daemon </h5><BR>
+Identify the user associate to Apache's httpd daemon running on your server. Contact your system administrator if needed.
+In most Linux/Unix installations the user running the httpd daemons is either 'apache' or 'www-data'
+**This information should be provided in PolyDB's configuration file as 'apache_user'** 
+<h5> 1.3.2 Create a subdirectory in htdocs directory which will host all polydb sites </h5><BR>
+Identify the location of Apache's DocumentRoot on your server. Contact your system administrator if needed.
+In a standard Linux installation of Apache the DocumentRoot is:
+/var/www/
+Then either create or ask your system administrator to create a directory in the DocumentRoot that will host all PolyDB web sites.
+This directory should be writeable by anyone.
+Example:
+<code>$ sudo mkdir /var/www/polydb</code><BR>
+<code>$ sudo chmod a+w /var/www/polydb</code><BR>
+**The full path of PolyDB's subdirectory in DocumentRoot should be provided in PolyDB's configuration file as 'html_base'** 
+<h5> 1.3.3 Create a subdirectory in cgi-bin directory which will contain the web front end scripts </h5><BR>
+Identify the location of Apache's cgi-bin directory on your server. Contact your system administrator if needed.
+In a standard Linux installation of Apache the path to cgi-bin directory is:
+/usr/lib/cgi-bin
+Then either create or ask your system administrator to crate a subdirectory in the cgi-bin directory that will contain the web front end scr
+ipts. 
+This directory should be writeable by anyone.
+Example:
+<code>$ sudo mkdir /usr/lib/cgi-bin/polydb</code><BR>
+<code>$ sudo chmod a+w /usr/lib/cgi-bin/polydb</code><BR>
+**The full path of PolyDB's subdirectory in cgi-bin should be provided in PolyDB's configuration file as 'cgibin_root'** 
+<h5> 1.3.4 URL of the host </h5><BR>
+Determine the hostname where PolyDB is being installed. Contact your system administrator if needed.
+Example:
+www.myhost.org
+**The hostname should be provided in PolyDB's configuration file as 'host'** 
+<h5> 1.3.4 URL of future PolyDB web pages </h5><BR>
+Determine the URL pointing to future PolyDB-generated web pages. Inform your system administrator of the location of PolyDB subdirectory in 
+DocumentRoot and he/she will be able to provide you the full URL that points to that location.
+Example:
+www.myhost.org/polydb
+**The URL should be provided in PolyDB's configuration file as 'url'** 
+<h4> 1.4 - Installing required Perl libraries </h4><BR>
+PolyDB requires the following CPAN modules:
+<li>
+<ul> Parse::PlainConfig </ul>
+</li>
+<li>
+<ul> Config::Validate </ul>
+</li>
+<li>
+<ul> File::System </ul>
+</li>
+<li>
+<ul> DBD::Pg </ul>
+</li>
+<li>
+<ul> TemplateToolkit </ul>
+</li>
+<li>
+<ul> Algorithm::Combinatorics </ul>
+</li>
+<li>
+<ul> Log::Log4perl </ul>
+</li>
+<li>
+<ul> Term::ProgressBar </ul>
+</li>
+Those can be installed using CPAN modules. But first certify that CPAN modules is already configured by issuing the command below:
+<code>$ sudo perl -MCPAN -e shell</code><BR>
+If the command above returns the prompt 'cpan[1]>' or similar prompt then the CPAN module is already configured. So quit the cpan shell by t
+yping:
+cpan[1]> quit
+If the command returns a text saying that 'CPAN requires configuration...' follow the steps for automatic configuration of CPAN and select t
+he 'sudo' option when asked for "how to prepare the Perl library".
+Select the default option in every other question. Quit CPAN after the configuration is done by typing:
+cpan[1]> quit
+Now you are ready to install the required Perl modules. Issue the following commands:
+<code>$ sudo perl -MCPAN -e 'install Parse::PlainConfig'</code><BR>
+<code>$ sudo perl -MCPAN -e 'install Config::Validate'</code><BR>
+<code>$ sudo perl -MCPAN -e 'install File::System'</code><BR>
+<code>$ sudo perl -MCPAN -e 'install DBD::Pg'</code><BR>
+<code>$ sudo perl -MCPAN -e 'install Template'</code><BR>
+<code>$ sudo perl -MCPAN -e 'install Algorithm::Combinatorics'</code><BR>
+<code>$ sudo perl -MCPAN -e 'install Log::Log4perl'</code><BR>
+<code>$ sudo perl -MCPAN -e 'install Term::ProgressBar'</code><BR>
+In addition to those modules, PolyDB requires the Vcf.pm file, part of the VCFTools library.
+The complete VCFTools library does not have to be installed, just download VCFTools from SourceForge (https://sourceforge.net/projects/vcfto
+ols/), decompress the file in a directory that you own and keep note of the full path to the subdirectory 'perl' in the uncompressed VCFTool
+s directory tree. 
+Example:
+/home/john/vcftools_0.1.11/perl 
+**The path to the Vcf.pm file should be provided in PolyDB's configuration file 'vcf_pm_dir'**
+<h4> 1.5 - Adjusting host-specific configuration file </h4><BR>
+Now we need to transfer all gathered information to PolyDB's host-specific configuration file.
+First create your own host-specific config file by copying from a template file distributed with PolyDB.
+Use as the prefix the name of the new file th name of server hosting PolyDB. And VERY IMPORTANT, the filename should have 'host-specific.con
+fig' as a suffix.
+<code>$ cd $POLYDB_HOME</code><BR>
+<code>$ cp template.host-specific.config  myhost.host-specific.config</code><BR>
+In the commands above "$POLYDB_HOME' should be substituted by the directory where PolyDB is located; and 'myhost' should be substituted by t
+he hostname hosting PolyDB.
+Next add all in the information gathered during the installation process to its corresponding place in the host-specific config file. The va
+riable in the host-specific file that should contain each piece of information is indicated in the lines above quoted with two asterisks '**
+'.
+To confirm that the configuration file was correctly adjusted, please execute the script 'test_host-specific_config.pl'. No parameters are r
+equired:
+<code>$ cd $POLYDB_DIR</code><BR>
+<code>$ ./test_host-specific_config.pl</code><BR>
+Please correct any error reported by this script.
+If no errors are reported then you have succesfully configured PolyDB.
+<hr>
+<h3> 2. Creating a PolyDB database and web site from the sample data distributed with PolyDB </h3><BR>
+Set the sample_data subdirectory of the PolyDB HOME as the current directory:
+<code>$ cd </code><BR>
+<li>
+<ul> Copy the template configuration file from PolyDB HOME to your working directory. We recommend to use the 'dataset name' as the prefix o
+f the destination file </ul>
+</li>
+Example:
+<code>$ cp my_polydb_home_directory/configuration_file_template.conf my_dataset_name.conf</code><BR>
+<li>
+<ul> Modify the configuration file according to instructions in its content </ul>
+</li>
+<li>
+<ul> Execute PolyDB installer. </ul>
+</li>
+Example:
+<code>$ my_polydb_home_directory/polydb_installer.pl --conf my_dataset_name.conf</code><BR>
+<hr>
+<h3> 4. Creating a PolyDB database from your own VCF files </h3><BR>
+<h4> 4.1 - Generate Annotated VCF files  </h4><BR>
+To generate annotated VCF you will need a GFF3 file describing annotation of the reference genome used in the genotype calls.
+Then, from the directory containing the VCF files, use the execute the following command for each VCF file that will be processed by PolyDB:
+<code>$ my_polydb_home_directory/vcfannotator/VCF_annotator.pl --gff3 gff3_of_reference --vcf vcf_file</code><BR>
+In the command above: 
+<li>
+<ul> please specify your PolyDB home directory where it says 'my_polydb_home_directory'. </ul>
+</li>
+<li>
+<ul> indicate the path of the reference file where it says 'gff3_of_reference' </ul>
+</li>
+<li>
+<ul> indicate the path of the VCF file being annotated where it says 'vcf_file' </ul>
+</li>
+In case you are planning to upload several VCF files use the instructions below to automate the VCF annotation:
+<li>
+<ul> Create a file listing all the path the VCF files that will be annotated. A easy way to create this file is to execute the following com
+mand from the directory containing all VCF files: </ul>
+</li>
+<code>$ ls *.vcf > all_vcfs</code><BR>
+From the same directory execute the following commands
+<code>$ tcsh</code><BR>
+<code>$ foreach file (`cat all_vcfs`)</code><BR>
+<code>$ my_polydb_home_directory/vcfannotator/VCF_annotator.pl \</code><BR>
+<code>$ --gff3 gff3_of_reference --genome genome.fas --vcf $file > $file.annot</code><BR>
+<code>$ end</code><BR>
+In the commands above: 
+<li>
+<ul> please specify your PolyDB home directory where it says 'my_polydb_home_directory'. </ul>
+</li>
+<li>
+<ul> indicate the path of the reference file where it says 'gff3_of_reference' </ul>
+</li>
+<li>
+<ul> indicate the path of the reference genome in FASTA format where it says 'genome.fas'  </ul>
+</li>
+<h4> 4.2 - Creating PolyDB instance  </h4><BR>
+<li>
+<ul> Decide for a name representing the batch of VCF files that will be processed by PolyDB. </ul>
+</li>
+We will refer to it as 'dataset name'.
+<li>
+<ul> We recommended that you create a working directory to deal with each batch of VCF files that will be uploaded into the database. </ul>
+</li>
+<li>
+<ul> Copy the template configuration file from PolyDB HOME to your working directory. We recommend to use the 'dataset name' as the prefix o
+f the destination file </ul>
+</li>
+Example:
+<code>$ cp my_polydb_home_directory/configuration_file_template.conf my_dataset_name.conf</code><BR>
+<li>
+<ul> Modify the configuration file according to instructions in its content </ul>
+</li>
+<li>
+<ul> Execute PolyDB installer. </ul>
+</li>
+Example:
+<code>$ my_polydb_home_directory/polydb_installer.pl --conf my_dataset_name.conf</code><BR>
+<hr>
+<h3> 5. PolyDB limitations </h3><BR>
+PolyDB was initially designed to store genotype calls on bacterial genomes. 
+Because of that haplotype and polyploid information reported in the VCF is currently disregarded by the parser
+and not stored in the database. We do plan to implement those features in the near future. 
+In addition to that PolyDB also have the following limitations:
+<li>
+<ul> Each VCF file should represent one single sample. VCF files containing multiple results are not accepted. </ul>
+</li>
+<li>
+<ul> Indels and substitutions larger than 255 bp will be discarded. </ul>
+</li>
+
+
+      
+
+      <div class="footer">
+        <a href=http://www.broadinstitute.org>
+        <img src="img/broad_logo.png" alt="Broad logo" height=60 width=120><BR>
+        Broad Institute of MIT and Harvard 2013
+        </a>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap-transition.js"></script>
+    <script src="js/bootstrap-alert.js"></script>
+    <script src="js/bootstrap-modal.js"></script>
+    <script src="js/bootstrap-dropdown.js"></script>
+    <script src="js/bootstrap-scrollspy.js"></script>
+    <script src="js/bootstrap-tab.js"></script>
+    <script src="js/bootstrap-tooltip.js"></script>
+    <script src="js/bootstrap-popover.js"></script>
+    <script src="js/bootstrap-button.js"></script>
+    <script src="js/bootstrap-collapse.js"></script>
+    <script src="js/bootstrap-carousel.js"></script>
+    <script src="js/bootstrap-typeahead.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,13 @@
+<div class="article">
+ 	<h2><span>Download Data</a></span></h2><html>
+	<li><a href="[% URL_base_dump_file %]/[% zipfile %]">Zip file with data</a></li>
+	<br>
+	The data dump is a tab delimited file having the first line as a header<br><br>
+	<b>Important:</b> We recommend MS-Excel as a viewer, but please verify if the data was imported correctly into Excel before starting the analysis. <br>
+	MS-Excel converts numerical gene identifiers with many digits to floating point numbers. This will automatically round the supposedly number, what is highly undesirable for a gene identifier<br>
+	This could be prevented by importing the data in Excel using the "Import Text File..." and explicitly
+	assigning the gene identifier columns as text during the importing process. <BR><BR>
+	Instructions on how to import text file into MS-Excel can be found <a href=http://office.microsoft.com/en-us/excel-help/import-data-using-the-text-import-wizard-HP010342954.aspx>here</a>.
+	<p>
+</div>
+

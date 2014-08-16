@@ -1,0 +1,19 @@
+
+ 
+    </div> <!-- /page-in -->
+    </div> <!-- /page -->
+
+    <!-- Footer -->
+    <div id="footer">
+       
+        <hr class="noscreen" />
+        
+        <p id="createdby">Based on <a href="http://www.nuvio.cz">Nuvio | Webdesign</a></p>
+        <p id="copyright">Broad Institute - 
+        <a href="mailto:gustavo@broadinstitute.org">CASA web framework: Gustavo C. Cerqueira & Michael Waisberg</a></p>
+    </div> <!-- /footer -->
+
+</div> <!-- /main -->
+
+</body>
+</html>
