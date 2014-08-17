@@ -4,20 +4,9 @@ PolyDB v1.0 - Oct 16, 2013
 PolyDB is a software package that converts genotype calls stored in VCF files into a PostgreSQL database and a custom made web front-end, allowing the easy exploration of genetic variatons by users who are not familiar with tools to query the original VCF files. The availability of the variants through a web interface also allows remotely located collaborators to query and download data.
 
 
-1. INSTALLING
-=============
-
-The setup of PolyDB involves taking note of directory paths and configuration values that are specific to the user's host. Those values should be then tranfered this information to PolyDB's configuration file.
-
-Any information that should remembered and later transfered to PolyDB configuration file will be indicated by the following disclaimer:
-
-**This information should be provided in PolyDB's configuration file as 'variable_name'** 
-
-where 'variable_name' indicates the name of the variable in the PolyDB configuration file where the information should be transfered to.
  
-
-1.1 - Server requirements
--------------------------
+1. Server requirements
+=======================
 Identify the UNIX/Linux server that will host PolyDB.
  
 This server should have the following applications installed:
@@ -41,16 +30,16 @@ $ sudo apt-get install libpq-dev
 $ sudo apt-get install perl
 $ sudo apt-get install r-base-core
 
-1.5 - Download PolyDB
----------------------
+2. Download PolyDB
+===================
 
-Create a directory 
-
+Create a directory that will host PolyDB
 
 Download either the stable version of PolyDB from
-http://www.broadinstitute.org/polydb/download/polydb_current.tar.gz
+http://www.broadinstitute.org/polydb/download/polydb_latest.tar.gz
 
 or the version containing the latest additions from Github:
+
 
 
 
