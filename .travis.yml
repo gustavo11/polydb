@@ -6,7 +6,7 @@ addons:
   postgresql: "9.3"
   
 before_install:
-  - sudo apt-get install apache2
+  #- sudo apt-get install apache2
   - sudo apt-get install libpq-dev
   - sudo apt-get install r-base-core
   - psql -c 'CREATE DATABASE polydb;' -U postgres
