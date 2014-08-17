@@ -51,6 +51,7 @@ Download either the stable version of PolyDB from
 http://www.broadinstitute.org/polydb/download/polydb_current.tar.gz
 
 or the version containing the latest additions from Github:
+https://github.com/gustavo11/polydb.git
 
 
 
