@@ -13,7 +13,7 @@ before_install:
   - cpanm --quiet --installdeps --notest Config::Validate
   - cpanm --quiet --installdeps --notest File::System
   - cpanm --quiet --installdeps --notest DBD::Pg
-  - cpanm --quiet --installdeps --notest TemplateToolkit
+  - cpanm --quiet --installdeps --notest Template
   - cpanm --quiet --installdeps --notest Algorithm::Combinatorics
   - cpanm --quiet --installdeps --notest Log::Log4perl
   - cpanm --quiet --installdeps --notest Term::ProgressBar
