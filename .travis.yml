@@ -4,12 +4,10 @@ perl:
 
 addons:
   postgresql: "9.3"
-
+  
 before_install:
   - sudo apt-get install libpq-dev
   - sudo apt-get install r-base-core
-
-before_script:
   - psql -c 'CREATE DATABASE polydb;' -U postgres
   - cpanm --quiet --installdeps --notest Parse::PlainConfig
   
