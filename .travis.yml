@@ -1,31 +1,14 @@
 language: perl
-perl:
-  - "5.18"
 
 addons:
   postgresql: "9.3"
   
 # Use this to prepare the system to install prerequisites or dependencies
 before_install:
-  - sudo apt-get update
-  - sudo apt-get autoremove
-  - sudo apt-get install -y --force-yes apache2
-  - sudo apt-get install libpq-dev
-  - sudo apt-get install r-base-core
   - psql -c 'CREATE DATABASE polydb;' -U postgres
 
 # Use this to install any prerequisites or dependencies necessary to run your build
 install:
-  - cpanm --quiet --installdeps --notest Parse::PlainConfig
-  - cpanm --quiet --installdeps --notest Config::Validate
-  - cpanm --quiet --installdeps --notest File::System
-  - cpanm --quiet --installdeps --notest DBD::Pg
-  - cpanm --quiet --installdeps --notest Template
-  - cpanm --quiet --installdeps --notest Algorithm::Combinatorics
-  - cpanm --quiet --installdeps --notest Log::Log4perl
-  - cpanm --quiet --installdeps --notest Term::ProgressBar
-
-
 
 # Use this to prepare your build for testing
 # e.g. copy database configurations, environment variables, etc.
@@ -35,6 +18,7 @@ before_script:
 # All commands must exit with code 0 on success. 
 # Anything else is considered failure.
 script:
+  - echo -e `ps -ef | grep postgres | grep -v 'postgres:' | grep -v 'grep'`
 
 after_success:
 
