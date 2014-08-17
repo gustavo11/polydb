@@ -1,15 +1,26 @@
 PolyDB v1.0 - Oct 16, 2013
 ==========================
 
+1. Introduction
+===============
+
 PolyDB is a software package that converts genotype calls stored in VCF files into a PostgreSQL database and a custom made web front-end, allowing the easy exploration of genetic variatons by users who are not familiar with tools to query the original VCF files. The availability of the variants through a web interface also allows remotely located collaborators to query and download data.
 
+2. PolyDB limitations
+=====================
+PolyDB was initially designed to store genotype calls on bacterial genomes. 
+Because of that haplotype and polyploid information reported in the VCF is currently disregarded by the parser
+and not stored in the database. We do plan to implement those features in the near future. 
 
+In addition to that PolyDB also have the following limitations:
+- Each VCF file should represent one single sample. VCF files containing multiple results are not accepted.
+- Indels and substitutions larger than 255 bp will be discarded.
  
-1. Server requirements
+
+3. Server requirements
 =======================
-Identify the UNIX/Linux server that will host PolyDB.
  
-This server should have the following applications installed:
+The UNIX/Linux server hosting PolyDB should have the following applications installed:
 
 - PostgreSQL server. Follow installation instructions here: http://www.postgresql.org/docs/9.1/static/admin.html
 
@@ -33,20 +44,35 @@ $ sudo apt-get install r-base-core
 2. Download PolyDB
 ===================
 
-Create a directory that will host PolyDB
-
-Download either the stable version of PolyDB from
-http://www.broadinstitute.org/polydb/download/polydb_latest.tar.gz
+Create the directory that will host PolyDB and either download the stable version of PolyDB site:
+curl http://www.broadinstitute.org/polydb/download/polydb_latest.tar.gz
 
 or the version containing the latest additions from Github:
+git clone https://github.com/gustavo11/polydb.git
+
+
+
+3. Quick install
+================
 
 
 
 
-1.2 - Configuring PostgreSQL
+4. Custom install
+=================
+
+The custom installation of PolyDB involves taking note of directory paths and configuration values that are specific to the user's host. Those values should be then tranfered this information to PolyDB's configuration file.
+
+Any information that should remembered and later transfered to PolyDB configuration file will be indicated by the following disclaimer:
+
+**This information should be provided in PolyDB's configuration file as 'variable_name'** 
+
+where 'variable_name' indicates the name of the variable in the PolyDB configuration file where the information should be transfered to.
+
+4.1 - Configuring PostgreSQL
 ----------------------------
 
-1.2.1 - Identify directory path to PostgreSQL binaries
+4.1.1 - Identify directory path to PostgreSQL binaries
 
 Issue the command below to identify the directory where PostgreSQL binaries are located in your system:
 
@@ -60,7 +86,7 @@ In the example above, the PostgreSQL binaries are located in /usr/lib/postgresql
 **The full path to PostgreSQL binaries should be provided in PolyDB's configuration file as 'psql_bin_dir'** 
 
 
-1.2.2 - Create or identify a database in the local instance of PostgreSQL that will be used by PolyDB to store the variant calls
+4.1.2 - Create or identify a database in the local instance of PostgreSQL that will be used by PolyDB to store the variant calls
 
 We recommended a separate database to store PolyDB tables, but any previously created database can be used. The newly created or chosen database has to be provided to PolyDB through its configuration file together with a user name and password associated to an account with write access to that database, including 'create table' permission.
 
@@ -86,7 +112,7 @@ In the commands above the word jonh should be sustituted by your user name.
 **The user password should be provided in PolyDB's configuration file as 'psql_database_password'** 
 
 
-1.2.3 - Identifies which port psql is listening to
+4.1.3 - Identifies which port psql is listening to
 
 Issue the command below to identify the number of the port psql daemon is listening to:
 $ pg_lsclusters
@@ -95,7 +121,7 @@ $ pg_lsclusters
 
 
 
-1.3 - Configuring Apache
+4.2 - Configuring Apache
 ------------------------
 
 1.3.1 Identify the user associated to httpd daemon
@@ -310,15 +336,7 @@ Example:
 $ my_polydb_home_directory/polydb_installer.pl --conf my_dataset_name.conf
 
 
-5. PolyDB limitations
-=====================
-PolyDB was initially designed to store genotype calls on bacterial genomes. 
-Because of that haplotype and polyploid information reported in the VCF is currently disregarded by the parser
-and not stored in the database. We do plan to implement those features in the near future. 
 
-In addition to that PolyDB also have the following limitations:
-- Each VCF file should represent one single sample. VCF files containing multiple results are not accepted.
-- Indels and substitutions larger than 255 bp will be discarded.
 
 
 

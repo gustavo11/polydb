@@ -1,0 +1,27 @@
+language: perl
+
+addons:
+  postgresql: "9.3"
+  
+# Use this to prepare the system to install prerequisites or dependencies
+before_install:
+  - psql -c 'CREATE DATABASE polydb;' -U postgres
+
+# Use this to install any prerequisites or dependencies necessary to run your build
+install: true
+
+# Use this to prepare your build for testing
+# e.g. copy database configurations, environment variables, etc.
+before_script: true
+
+# Default is specific to project language
+# All commands must exit with code 0 on success. 
+# Anything else is considered failure.
+script:
+  - echo -e `ps -ef | grep postgres | grep -v 'postgres:' | grep -v 'grep'`
+
+after_success: true
+
+after_failure: true
+
+after_script: true
