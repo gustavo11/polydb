@@ -35,7 +35,7 @@ before_script: true
 # All commands must exit with code 0 on success. 
 # Anything else is considered failure.
 script:
-  - ./polydb_installer --config .travis-ci.configuration_file.conf  --skip_warning
+  - ./polydb_installer.pl --config .travis-ci.configuration_file.conf  --skip_warning
 
 after_success: true
 
