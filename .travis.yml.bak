@@ -34,7 +34,8 @@ before_script: true
 # Default is specific to project language
 # All commands must exit with code 0 on success. 
 # Anything else is considered failure.
-script: true
+script:
+  - ./polydb_installer --config .travis-ci.configuration_file.conf  --skip_warning
 
 after_success: true
 
