@@ -24,7 +24,7 @@ install:
   - cpanm --installdeps Log::Log4perl
   - cpanm --installdeps Term::ProgressBar
   - svn export http://svn.code.sf.net/p/vcftools/code/trunk/ vcftools
-  - cpanm --installdeps Parse::PlainConfig
+  - cpanm --installdeps --force Parse::PlainConfig
 
 
 # Use this to prepare your build for testing
