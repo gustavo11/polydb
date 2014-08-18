@@ -24,6 +24,7 @@ install:
   - cpanm --quiet --installdeps --notest Algorithm::Combinatorics
   - cpanm --quiet --installdeps --notest Log::Log4perl
   - cpanm --quiet --installdeps --notest Term::ProgressBar
+  - svn export http://svn.code.sf.net/p/vcftools/code/trunk/ vcftools
 
 
 # Use this to prepare your build for testing
