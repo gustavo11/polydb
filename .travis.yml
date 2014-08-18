@@ -19,6 +19,7 @@ before_script: true
 # Anything else is considered failure.
 script:
   - echo -e `ps -ef | grep postgres | grep -v 'postgres:' | grep -v 'grep'`
+  - echo $PWD
 
 after_success: true
 
