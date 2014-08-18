@@ -16,15 +16,15 @@ before_install:
 
 # Use this to install any prerequisites or dependencies necessary to run your build
 install:
-  - cpanm --quiet --installdeps --notest Parse::PlainConfig
-  - cpanm --quiet --installdeps --notest Config::Validate
-  - cpanm --quiet --installdeps --notest File::System
-  - cpanm --quiet --installdeps --notest DBD::Pg
-  - cpanm --quiet --installdeps --notest Template
-  - cpanm --quiet --installdeps --notest Algorithm::Combinatorics
-  - cpanm --quiet --installdeps --notest Log::Log4perl
-  - cpanm --quiet --installdeps --notest Term::ProgressBar
+  - cpanm --installdeps Config::Validate
+  - cpanm --installdeps File::System
+  - cpanm --installdeps DBD::Pg
+  - cpanm --installdeps Template
+  - cpanm --installdeps Algorithm::Combinatorics
+  - cpanm --installdeps Log::Log4perl
+  - cpanm --installdeps Term::ProgressBar
   - svn export http://svn.code.sf.net/p/vcftools/code/trunk/ vcftools
+  - cpanm --installdeps Parse::PlainConfig
 
 
 # Use this to prepare your build for testing
