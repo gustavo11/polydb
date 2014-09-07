@@ -24,10 +24,8 @@ install:
   - cpanm Log::Log4perl
   - cpanm Term::ProgressBar
   - svn export http://svn.code.sf.net/p/vcftools/code/trunk/ vcftools
-  - cpanm Parse::PlainConfig
   - cpanm --notest Paranoid
   - cpanm Parse::PlainConfig  
-
 
 # Use this to prepare your build for testing
 # e.g. copy database configurations, environment variables, etc.
