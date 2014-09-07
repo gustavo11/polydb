@@ -1,7 +1,7 @@
 PolyDB v1.0 - Oct 16, 2013
 ==========================
 
-1. Introduction
+1. Introductionn
 ===============
 
 PolyDB is a software package that converts genotype calls stored in VCF files into a PostgreSQL database and a custom made web front-end, allowing the easy exploration of genetic variatons by users who are not familiar with tools to query the original VCF files. The availability of the variants through a web interface also allows remotely located collaborators to query and download data.
