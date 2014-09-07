@@ -25,7 +25,8 @@ install:
   - cpanm Term::ProgressBar
   - svn export http://svn.code.sf.net/p/vcftools/code/trunk/ vcftools
   - cpanm --notest Paranoid
-  - cpanm Parse::PlainConfig  
+  - cpanm Parse::PlainConfig
+  - cpanm IPC::Run
 
 # Use this to prepare your build for testing
 # e.g. copy database configurations, environment variables, etc.
