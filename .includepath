@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<includepath>
+  <includepathentry path="/usr/lib/perl5" />
+  <includepathentry path="/usr/local/vcftools_0.1.7/perl" />
+</includepath>
+

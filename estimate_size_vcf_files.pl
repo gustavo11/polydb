@@ -6,6 +6,7 @@ use lib "$FindBin::Bin";
 use Log::Log4perl;
 use Term::ProgressBar;
 use VCFUtils;
+use File::Basename;
 
 use strict;
 
@@ -42,6 +43,13 @@ my ( $refSampleNames, $refVCFList, $refNumCalls )  = VCFUtils::read_vcf_list( $v
 
 for( my $ind = 0; $ind < scalar(@{$refVCFList}); $ind++ ){
 	my $vcf_file = $refVCFList->[ $ind ];
+	
+	# If NOT full path (starting with '/')
+	# then add the path of vcf_list file to the path of each VCF
+	if( $vcf_file !~ /^\// ){
+		my ($void, $vcf_list_path, $void ) = fileparse( $vcf_file_list );
+		$vcf_file = $vcf_list_path . $vcf_file;
+	}
 	
 	my $vcf_file_num = $ind + 1;
 	

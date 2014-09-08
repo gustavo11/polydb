@@ -6,6 +6,7 @@ use lib "$FindBin::Bin";
 use Log::Log4perl;
 use Term::ProgressBar;
 use VCFUtils;
+use File::Basename;
 
 use strict;
 
@@ -58,6 +59,13 @@ my %polymorphic_sites;
 for( my $ind = 0; $ind < scalar(@vcf_list); $ind++ ){
 	my $vcf_file = $vcf_list[ $ind ];
 	
+	# If NOT full path (starting with '/')
+	# then add the path of vcf_list file to the path of each VCF
+	if( $vcf_file !~ /^\// ){
+		my ($void, $vcf_list_path, $void ) = fileparse( $vcf_file_list );
+		$vcf_file = $vcf_list_path . $vcf_file;
+	}	
+	
 	my $vcf_file_num = $ind + 1;
 	my $progress_eta = $refNumCalls->[ $ind ];
 
@@ -71,7 +79,7 @@ for( my $ind = 0; $ind < scalar(@vcf_list); $ind++ ){
 	}
 	
 		
-	open IN, "$vcf_file";
+	open IN, "$vcf_file" or die "Unable to open file $vcf_file!!!\n";;
 	
 	my $cont = 0;
 	while( <IN> ){
@@ -129,6 +137,14 @@ my @new_vcf_list = map {
 
 for( my $ind = 0; $ind < scalar(@vcf_list); $ind++ ){
 	my $vcf_file = $vcf_list[ $ind ];
+	
+	# If NOT full path (starting with '/')
+	# then add the path of vcf_list file to the path of each VCF
+	if( $vcf_file !~ /^\// ){
+		my ($void, $vcf_list_path, $void ) = fileparse( $vcf_file_list );
+		$vcf_file = $vcf_list_path . $vcf_file;
+	}		
+	
 	my $vcf_output_file = $new_vcf_list[ $ind ];
 	
 	my $vcf_file_num = $ind + 1;
