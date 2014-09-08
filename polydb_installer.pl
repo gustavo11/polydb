@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# Todo:
+# Todoo:
 # It sounds really stupid, but the library that Im using to validate the configuration file variables is not accepting 
 # an extra space in the dataset name. You have an extra space in the end of the dataset name.
 # I will fix this, but please for the time being remove any extra space in the end of variables in the configuration file.
