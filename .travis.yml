@@ -22,7 +22,6 @@ install:
   - cpanm Algorithm::Combinatorics
   - cpanm Log::Log4perl
   - cpanm Term::ProgressBar
-  - svn export http://svn.code.sf.net/p/vcftools/code/trunk/ vcftools
   - svn export http://svn.code.sf.net/p/vcftools/code/ vcftools
   - cpanm --notest Paranoid
   - cpanm Parse::PlainConfig
