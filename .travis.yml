@@ -5,7 +5,7 @@ perl:
 addons:
   postgresql: "9.3"
   
-# Use this to prepare the system to install prerequisites or dependencies. Testing
+# Use this to prepare the system to install prerequisites or dependencies.
 before_install:
   - sudo apt-get update
   - sudo apt-get autoremove
