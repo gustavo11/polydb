@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includepath>
+  <includepathentry path="/Users/gustavo/Documents/workspace/.metadata/.plugins/org.epic.debug" />
   <includepathentry path="/usr/lib/perl5" />
   <includepathentry path="/usr/local/vcftools_0.1.7/perl" />
+  <includepathentry path="/opt/local/lib/perl5/site_perl/5.16.3/darwin-thread-multi-2level" />
+  <includepathentry path="/opt/local/lib/perl5/site_perl/5.16.3" />
+  <includepathentry path="/opt/local/lib/perl5/vendor_perl/5.16.3/darwin-thread-multi-2level" />
+  <includepathentry path="/opt/local/lib/perl5/vendor_perl/5.16.3" />
+  <includepathentry path="/opt/local/lib/perl5/5.16.3/darwin-thread-multi-2level" />
+  <includepathentry path="/opt/local/lib/perl5/5.16.3" />
+  <includepathentry path="/opt/local/lib/perl5/site_perl" />
+  <includepathentry path="/opt/local/lib/perl5/vendor_perl" />
+  <includepathentry path="/usr/local/vcftools/trunk/perl" />
 </includepath>
 

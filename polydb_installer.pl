@@ -1,19 +1,11 @@
 #!/usr/bin/env perl
 
-# Todo:
-# It sounds really stupid, but the library that Im using to validate the configuration file variables is not accepting 
-# an extra space in the dataset name. You have an extra space in the end of the dataset name.
-# I will fix this, but please for the time being remove any extra space in the end of variables in the configuration file.
-# I will also turn off error dump so you can better see the error description. 
-# progress bar when inserting and updaiting the db
-# progress file allowing the script to start from where was halted
+# Todo: library that Im using to validate the configuration file variables is not accepting an extra space in the dataset name. 
+# TODO: The value psql_bin_dir has to be bin directory of psql. If the user use a directory containing a link to psql, this does not work
+# Check if I provide this information in the manual 
+# TODO: Add in the manual the info of how to install in a MacOS (use home brewer)
+# TODO: create default values for: psql_port, psql_bin_dir, psql_database_name, apache_user
 
-# Introduce a switch that allow the keeping of all homogeneous sites
-
-# use DBHelper;
-
-# Add polydb_home to installer config instead of polydb_template
-# Add to installer user and pass to Postgres
 
 use strict;
 
@@ -181,7 +173,7 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 	
 	
 	my $conf = new Parse::PlainConfig;
-	my $conf = Parse::PlainConfig->new(
+	$conf = Parse::PlainConfig->new(
 		'PARAM_DELIM'  => '=',
 		'MAX_BYTES'    => 65536,
 		'SMART_PARSER' => 1,
@@ -579,7 +571,7 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		$p{apache_user};
 	
 	
-	my $cmd  = $polydb_home . "/generate_constants_file.pl";
+	$cmd  = $polydb_home . "/generate_constants_file.pl";
 	
 	
 	if( $cgibin_internal_htdocs ){
@@ -863,8 +855,11 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 			$p{psql_bin_dir}, 'Uploading annotation',
 			$upload_annot_dump );
 		
-		my $check_upload_annot_errors = `grep "ERROR" $upload_annot_dump | wc -l | awk '{print $1}'`;	
-		chomp $check_upload_annot_errors;
+		
+		# Count the number of lines containing the word ERROR
+		
+		my $check_upload_annot_errors = num_lines_with_error( $upload_annot_dump );
+			
 		
 		if( $check_upload_annot_errors ne 0 ){
 			$log->fatal("There were error during the upload of genome annotation into database!\n" .
@@ -903,6 +898,7 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		$p{psql_database_name}, 
 		$p{psql_database_user}, 
 		$p{psql_bin_dir} );
+		
 	
 	DBHelper::executeCmdPsql( "create table $sorted_dataset as select * from " . $p{dataset_name} . " order by chrom, position, var_type;",  
 		$p{psql_database_name}, 
@@ -931,7 +927,6 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 	
 	IPCHelper::RunCmd( $cmd , "Unable to change index names on file " . $dataset_name . "_ref_based_indexes.sql" );
 	
-	# Generate new indexes
 	DBHelper::executeFilePsql( $sorted_dataset . '_ref_based_indexes.sql',  
 		$p{psql_database_name}, 
 		$p{psql_database_user}, 
@@ -950,9 +945,9 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 	
 	
 	# Vacuum database
-	#	print "Vacuum database ...\n";
-	#	IPCHelper::RunCmd( [ $p{psql_bin_dir} . '/vacuumdb', '--analyze', $p{psql_database_name} ] , 
-	#		'Unable to vacuum database' . $p{psql_database_name} . '!!' );
+	#print "Vacuum database ...\n";
+	#IPCHelper::RunCmd( [ $p{psql_bin_dir} . '/vacuumdb', '--analyze', $p{psql_database_name} ] , 
+	#	'Unable to vacuum database' . $p{psql_database_name} . '!!' );
 	
 	
 	
@@ -1026,8 +1021,7 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 			{ cgibin_root => $cgibin_root } );
 	
 		
-	my $check_db_errors = `grep "ERROR" $check_db_out_file | wc -l | awk '{print $1}'`;
-	chomp $check_db_errors;
+	my $check_db_errors = num_lines_with_error( $check_db_out_file );
 	
 	if( $check_db_errors ne 0 ){
 		$log->fatal("Differences found between the original VCF files and the content of the database\n" .
@@ -1137,7 +1131,8 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		"Couldn't connect to $CASA::DB using string $CASA::DSN as $CASA::DB_USER\n"
 		. DBI->errstr );
 	
-	my $apache_user_exists = VCFDB::user_exists( $dbh, 'www-data' );
+	my $apache_user_exists = VCFDB::user_exists( $dbh, $p{apache_user} );
+	$dbh->disconnect();
 	
 	
 	if( not $apache_user_exists ){
@@ -1151,11 +1146,13 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 	
 	# Transfering the privileges from the user $p{psql_database_user} 
 	# to the Apache user (on PostgreSQL) so the web-front end can access polydb database
-	$cmd = 'grant "' . $p{psql_database_user} . '" to "' . $p{apache_user} . '";';
-	DBHelper::executeCmdPsql( 	$cmd,
-		$p{psql_database_name}, 
-		$p{psql_database_user}, 
-		$p{psql_bin_dir} );
+	if( $p{psql_database_user} ne $p{apache_user} ){
+		$cmd = 'grant "' . $p{psql_database_user} . '" to "' . $p{apache_user} . '";';
+		DBHelper::executeCmdPsql( 	$cmd,
+			$p{psql_database_name}, 
+			$p{psql_database_user}, 
+			$p{psql_bin_dir} );
+	}
 	
 	# Vacuum database
 	$log->info( "Vacuum database. This could take several minutes...\n" );
@@ -1209,5 +1206,18 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		`rm $file.bak`;
 		
 	}
+	
+	sub num_lines_with_error{
+		my ($file) = @_;
+		
+		my $num_lines = 0;
+		open FILE, $file or log->fatal("Unable to open file $file!");		
+		while (<FILE>) {
+  			 $num_lines++  if $_ =~ /ERROR/;
+		}
+		close(FILE);
+		return $num_lines;
+	}
+	
 	
 	

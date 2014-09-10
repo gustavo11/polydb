@@ -89,7 +89,7 @@ sub tab_file_to_hash {
 	}
 	else {
 		foreach my $curr_line ( @lines ){
-			split '\t', $curr_line; 
+			#split '\t', $curr_line; 
 		}
 		
 	}

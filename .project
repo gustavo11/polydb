@@ -14,4 +14,16 @@
 	<natures>
 		<nature>org.epic.perleditor.perlnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>polydb_OUTPUT</name>
+			<type>2</type>
+			<location>/Users/gustavo/Documents/workspace/OUTPUT/polydb</location>
+		</link>
+		<link>
+			<name>polydb_svn</name>
+			<type>2</type>
+			<location>/Users/gustavo/Documents/workspace/devel/polydb</location>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -130,7 +130,7 @@ sub postgres_generate_joined_table_schema_populate_vcf_fields_table {
 		"create table $project_name ( id_key SERIAL PRIMARY KEY, \n";
 	
 	# This will prevent inserts containing the same content (chrom, position, reference, var_type)
-	my $create_ref_based_indexes = "ALTER TABLE $project_name ADD CONSTRAINT unique_coord___$project_name UNIQUE (chrom,position,reference,var_type);\n";
+	my $create_ref_based_indexes .= "ALTER TABLE $project_name ADD CONSTRAINT unique_coord___$project_name UNIQUE (chrom,position,reference,var_type);\n";
 	
 	my $create_sample_based_indexes = "";
 	
@@ -277,9 +277,9 @@ sub postgres_generate_alter_table {
 	}
 	print "\tDone with parsing all fields ...\n";
 	
-	print "\Generating SQL to drop indexes ...\n";
+	print "Generating SQL to drop indexes ...\n";
 	my $drop_ind = drop_previous_indexes( $ref_fields_hash, $project_name );
-	print "\Generating SQL to re-create indexes ...\n";
+	print "Generating SQL to re-create indexes ...\n";
 	my $create_ind =
 	postgres_create_indexes( $project_name, $sample_num, $ref_fields_hash, $sample_list_arr_ref );
 	
@@ -533,12 +533,6 @@ sub generate_sample_table_inserts {
 	
 }
 
-sub add_gene_annotation_fields_indexes {
-	my ( $dbh, $project_name ) = @_;
-	execute_query( $dbh, $project_name, "", $add_gene_fields );
-	execute_query( $dbh, $project_name, "", $add_gene_indexes );
-	execute_query( $dbh, $project_name, "", $add_gene_annot_indexes );
-}
 
 sub add_gene_annotation_fields_indexes {
 	my ( $dbh, $project_name ) = @_;

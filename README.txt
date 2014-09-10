@@ -1,7 +1,7 @@
 PolyDB v1.0 - Oct 16, 2013
 ==========================
 
-1. Introductionn
+1. Introduction
 ===============
 
 PolyDB is a software package that converts genotype calls stored in VCF files into a PostgreSQL database and a custom made web front-end, allowing the easy exploration of genetic variatons by users who are not familiar with tools to query the original VCF files. The availability of the variants through a web interface also allows remotely located collaborators to query and download data.
@@ -41,8 +41,8 @@ $ sudo apt-get install libpq-dev
 $ sudo apt-get install perl
 $ sudo apt-get install r-base-core
 
-2. Download PolyDB
-===================
+4. Downloading
+==============
 
 Create the directory that will host PolyDB and either download the stable version of PolyDB site:
 curl http://www.broadinstitute.org/polydb/download/polydb_latest.tar.gz
@@ -51,17 +51,10 @@ or the version containing the latest additions from Github:
 git clone https://github.com/gustavo11/polydb.git
 
 
+5. Installing
+=============
 
-3. Quick install
-================
-
-
-
-
-4. Custom install
-=================
-
-The custom installation of PolyDB involves taking note of directory paths and configuration values that are specific to the user's host. Those values should be then tranfered this information to PolyDB's configuration file.
+The installation of PolyDB involves taking note of directory paths and configuration values that are specific to the user's host. Those values should be then tranfered to PolyDB's configuration file.
 
 Any information that should remembered and later transfered to PolyDB configuration file will be indicated by the following disclaimer:
 
@@ -69,10 +62,10 @@ Any information that should remembered and later transfered to PolyDB configurat
 
 where 'variable_name' indicates the name of the variable in the PolyDB configuration file where the information should be transfered to.
 
-4.1 - Configuring PostgreSQL
+5.1 - Configuring PostgreSQL
 ----------------------------
 
-4.1.1 - Identify directory path to PostgreSQL binaries
+5.1.1 - Identify directory path to PostgreSQL binaries
 
 Issue the command below to identify the directory where PostgreSQL binaries are located in your system:
 
@@ -86,7 +79,7 @@ In the example above, the PostgreSQL binaries are located in /usr/lib/postgresql
 **The full path to PostgreSQL binaries should be provided in PolyDB's configuration file as 'psql_bin_dir'** 
 
 
-4.1.2 - Create or identify a database in the local instance of PostgreSQL that will be used by PolyDB to store the variant calls
+5.1.2 - Create or identify a database in the local instance of PostgreSQL that will be used by PolyDB to store the variant calls
 
 We recommended a separate database to store PolyDB tables, but any previously created database can be used. The newly created or chosen database has to be provided to PolyDB through its configuration file together with a user name and password associated to an account with write access to that database, including 'create table' permission.
 
@@ -112,7 +105,7 @@ In the commands above the word jonh should be sustituted by your user name.
 **The user password should be provided in PolyDB's configuration file as 'psql_database_password'** 
 
 
-4.1.3 - Identifies which port psql is listening to
+5.1.3 - Identifies which port psql is listening to
 
 Issue the command below to identify the number of the port psql daemon is listening to:
 $ pg_lsclusters
@@ -121,10 +114,10 @@ $ pg_lsclusters
 
 
 
-4.2 - Configuring Apache
+5.2 - Configuring Apache
 ------------------------
 
-1.3.1 Identify the user associated to httpd daemon
+5.2.1 Identify the user associated to httpd daemon
 
 Identify the user associate to Apache's httpd daemon running on your server. Contact your system administrator if needed.
 In most Linux/Unix installations the user running the httpd daemons is either 'apache' or 'www-data'
@@ -132,7 +125,7 @@ In most Linux/Unix installations the user running the httpd daemons is either 'a
 **This information should be provided in PolyDB's configuration file as 'apache_user'** 
 
 
-1.3.2 Create a subdirectory in htdocs directory which will host all polydb sites
+5.2.2 Create a subdirectory in htdocs directory which will host all polydb sites
 
 Identify the location of Apache's DocumentRoot on your server. Contact your system administrator if needed.
 In a standard Linux installation of Apache the DocumentRoot is:
@@ -148,7 +141,7 @@ $ sudo chmod a+w /var/www/polydb
 **The full path of PolyDB's subdirectory in DocumentRoot should be provided in PolyDB's configuration file as 'html_base'** 
 
 
-1.3.3 Create a subdirectory in cgi-bin directory which will contain the web front end scripts
+5.2.3 Create a subdirectory in cgi-bin directory which will contain the web front end scripts
 
 Identify the location of Apache's cgi-bin directory on your server. Contact your system administrator if needed.
 In a standard Linux installation of Apache the path to cgi-bin directory is:
@@ -162,7 +155,7 @@ $ sudo chmod a+w /usr/lib/cgi-bin/polydb
 
 **The full path of PolyDB's subdirectory in cgi-bin should be provided in PolyDB's configuration file as 'cgibin_root'** 
 
-1.3.4 URL of the host
+5.2.4 URL of the host
 
 Determine the hostname where PolyDB is being installed. Contact your system administrator if needed.
 Example:
@@ -171,7 +164,7 @@ www.myhost.org
 **The hostname should be provided in PolyDB's configuration file as 'host'** 
 
 
-1.3.4 URL of future PolyDB web pages
+5.2.5 URL of future PolyDB web pages
 
 Determine the URL pointing to future PolyDB-generated web pages. Inform your system administrator of the location of PolyDB subdirectory in DocumentRoot and he/she will be able to provide you the full URL that points to that location.
 Example:
@@ -180,7 +173,7 @@ www.myhost.org/polydb
 **The URL should be provided in PolyDB's configuration file as 'url'** 
 
 
-1.4 - Installing required Perl libraries
+5.3 - Installing required Perl libraries
 ----------------------------------------
 PolyDB requires the following CPAN modules:
 
@@ -217,41 +210,20 @@ $ sudo perl -MCPAN -e 'install Term::ProgressBar'
 
 
 In addition to those modules, PolyDB requires the Vcf.pm file, part of the VCFTools library.
-The complete VCFTools library does not have to be installed, just download VCFTools from SourceForge (https://sourceforge.net/projects/vcftools/), decompress the file in a directory that you own and keep note of the full path to the subdirectory 'perl' in the uncompressed VCFTools directory tree. 
+The complete VCFTools library does not have to be installed, just download VCFTools from SourceForge (https://sourceforge.net/projects/vcftools/), decompress the file and take note of the full path to the subdirectory 'perl' in the uncompressed VCFTools directory tree. 
 Example:
-/home/john/vcftools_0.1.11/perl 
-
+$ cd /example/directory
+$ svn export http://svn.code.sf.net/p/vcftools/code/trunk/ vcftools
+$ cd vcftools<version>/perl
+$ pwd
+/example/directory/vcftools<version>/perl  <- take not of this
 
 **The path to the Vcf.pm file should be provided in PolyDB's configuration file 'vcf_pm_dir'**
 
 
 
-1.5 - Adjusting host-specific configuration file
-------------------------------------------------
-
-Now we need to transfer all gathered information to PolyDB's host-specific configuration file.
-
-First create your own host-specific config file by copying from a template file distributed with PolyDB.
-Use as the prefix the name of the new file th name of server hosting PolyDB. And VERY IMPORTANT, the filename should have 'host-specific.config' as a suffix.
-
-$ cd $POLYDB_HOME
-$ cp template.host-specific.config  myhost.host-specific.config
-
-In the commands above "$POLYDB_HOME' should be substituted by the directory where PolyDB is located; and 'myhost' should be substituted by the hostname hosting PolyDB.
-
-Next add all in the information gathered during the installation process to its corresponding place in the host-specific config file. The variable in the host-specific file that should contain each piece of information is indicated in the lines above quoted with two asterisks '**'.
-
-To confirm that the configuration file was correctly adjusted, please execute the script 'test_host-specific_config.pl'. No parameters are required:
-
-$ cd $POLYDB_DIR
-$ ./test_host-specific_config.pl
-
-Please correct any error reported by this script.
-If no errors are reported then you have succesfully configured PolyDB.
-
-
-2. Creating a PolyDB database and web site from the sample data distributed with PolyDB
-=======================================================================================
+2. Testing PolyDB installation with the sample data
+=================================================
 
 Set the sample_data subdirectory of the PolyDB HOME as the current directory:
 $ cd 
@@ -262,10 +234,25 @@ $ cp my_polydb_home_directory/configuration_file_template.conf my_dataset_name.c
 
 - Modify the configuration file according to instructions in its content
 
+
+Now we need to transfer all gathered information to PolyDB's configuration file.
+
+First create your own config. file by copying from the template distributed with PolyDB.
+Use as the prefix the name of the new file name of server hosting PolyDB. 
+
+$ cd $POLYDB_HOME
+$ cp configuration_file_template.conf  my.polydb.conf
+
+In the commands above "$POLYDB_HOME' should be substituted by the directory where PolyDB is located.
+
+Next add all in the information gathered during the installation process to its corresponding place in the config file. The variable that should contain each piece of information are indicated in the lines in this documments quoted with two asterisks '**'.
+
+
+
 - Execute PolyDB installer.
 Example:
 
-$ my_polydb_home_directory/polydb_installer.pl --conf my_dataset_name.conf
+$ /polydb/home/directory/polydb_installer.pl --conf my_dataset_name.conf
 
 
 4. Creating a PolyDB database from your own VCF files
@@ -305,15 +292,15 @@ In the commands above:
 ----------------------------------
 
 So they can be shown correctly
-BAM files should have the MD field so SNPs can be seen in JBrowse. This field is not required for Genomeview.
+BAM files should have the MD field so SNPs can be seen in JBrowse.
 The MD field can be added using the following Samtools command:
 
 $ samtools calmd -u original_bam_file bam_file_with_md_field
 
-Instruction on how to install Samtools can be found here.
+Instruction on how to install Samtools can be found here:
+
 
 In addition to that, the BAM files should be indexed, that means that those should be acompanied by their correspondent *.bam.bai file in the same directory. If you have generated a new BAM file with MD field using the instruction above then you need to generate a new index file to. Use the comand below:
-
 $ samtools index bam_file
 
 

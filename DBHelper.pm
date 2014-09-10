@@ -1,6 +1,7 @@
 package DBHelper;
 use strict;
 use IPCHelper;
+use DBI;
 
 sub upload_into_db{
 	my ( $dbh, $query, $line_num, $line ) = @_;
@@ -15,8 +16,13 @@ sub executeFilePsql{
 
 	my $log = Log::Log4perl->get_logger();	
 
-	my $progress_eta = `wc $file | awk '{print $1}'`;
-	chomp( $progress_eta );
+	# The estimate time is based on the number of lines in the VCF
+	# The routine below count the number of lines in the VCF
+	my $progress_eta = 0;
+	open(FILE, "$file") or $log->fatal("Unable to open file $file!");
+	$progress_eta++ while <FILE>;
+	close(FILE);
+
 	
 	if( defined $logfile ){
 		IPCHelper::RunSQLCmdList( [ 'cat', 
@@ -83,12 +89,11 @@ sub executeCmdPsql{
 	my ( $cmd, $database, $user, $postgres_dir, $logfile ) = @_;
 	my $postgres_bin = $postgres_dir . '/psql';
 	
-	
 	if( defined $logfile ){
-		IPCHelper::RunSQLCmdList( [ 'echo', 
-			"\'$cmd\'",
-			'|',
+		IPCHelper::RunCmd( [ 
 			$postgres_bin,
+			'-c',
+			$cmd,
 			$database,
 			'-U',
 			$user,
@@ -96,10 +101,10 @@ sub executeCmdPsql{
 			$logfile ], 
 			"Unable to execute PostgreSQL command\n\t$cmd\n\tUsing the PostgreSQL binaries at $postgres_bin", 1 );	
 	}else{
-		IPCHelper::RunSQLCmdList( [ 'echo', 
-			"\'$cmd\'",
-			'|',
+		IPCHelper::RunCmd( [ 
 			$postgres_bin,
+			'-c',
+			$cmd,
 			$database,
 			'-U',
 			$user ], 
@@ -108,6 +113,7 @@ sub executeCmdPsql{
 		
 	}
 }
+
 
 
 return 1;
