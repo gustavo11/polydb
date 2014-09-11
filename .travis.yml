@@ -28,6 +28,7 @@ install:
   - cpanm Parse::PlainConfig
   - cpanm IPC::Run
   - cpanm URI::Escape
+  - cpanm DB_File
 
 
 # Use this to prepare your build for testing
