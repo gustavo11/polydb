@@ -23,11 +23,12 @@ install:
   - cpanm Log::Log4perl
   - cpanm Term::ProgressBar
   - svn export http://svn.code.sf.net/p/vcftools/code/ vcftools
+  - cpanm CGI::Session::File
   - cpanm --notest Paranoid
   - cpanm Parse::PlainConfig
   - cpanm IPC::Run
   - cpanm URI::Escape
-  - cpanm CGI::Session::File
+
 
 # Use this to prepare your build for testing
 # e.g. copy database configurations, environment variables, etc.
