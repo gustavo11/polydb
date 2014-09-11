@@ -13,7 +13,7 @@ Because of that haplotype and polyploid information reported in the VCF is curre
 and not stored in the database. We do plan to implement those features in the near future. 
 
 In addition to that PolyDB also have the following limitations:
-- Each VCF file should represent one single sample. VCF files containing multiple results are not accepted.
+- Each VCF file should represent one single sample. VCF files containing multiple samples are not accepted.
 - Indels and substitutions larger than 255 bp will be discarded.
  
 
