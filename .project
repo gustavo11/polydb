@@ -16,6 +16,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>htdocs</name>
+			<type>2</type>
+			<location>/usr/local/var/www/htdocs</location>
+		</link>
+		<link>
 			<name>polydb_OUTPUT</name>
 			<type>2</type>
 			<location>/Users/gustavo/Documents/workspace/OUTPUT/polydb</location>

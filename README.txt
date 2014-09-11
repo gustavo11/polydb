@@ -74,7 +74,8 @@ $ ps -ef | grep postgres | grep -v 'postgres:' | grep -v 'grep'
 Example output: 
 $ postgres  1759     1  0 Sep14 ?        00:00:29 /usr/lib/postgresql/9.1/bin/postgres -D /var/lib/postgresql/9.1/main -c config_file=/etc/postgresql/9.1/main/postgresql.conf
 
-In the example above, the PostgreSQL binaries are located in /usr/lib/postgresql/9.1/bin
+In the example above, the PostgreSQL binaries are located in /usr/lib/postgresql/9.1/bin.
+This directory should contain at least the files 'psql' and 'vacuumdb'
 
 **The full path to PostgreSQL binaries should be provided in PolyDB's configuration file as 'psql_bin_dir'** 
 
@@ -107,11 +108,13 @@ In the commands above the word jonh should be sustituted by your user name.
 
 5.1.3 - Identifies which port psql is listening to
 
-Issue the command below to identify the number of the port psql daemon is listening to:
+In some systems the command below can be used to list port number psql daemon is listening to:
 $ pg_lsclusters
 
-**This port number should be provided in PolyDB's configuration file as 'psql_port'** 
+If not succesful use this alternative command:
+$ psql -c "select name, setting from pg_settings where name = 'port'" template1
 
+**The port number should be provided in PolyDB's configuration file as 'psql_port'** 
 
 
 5.2 - Configuring Apache

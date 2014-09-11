@@ -10,7 +10,6 @@ use File::Basename;
 
 use strict;
 
-
 Log::Log4perl->init( $FindBin::Bin . '/log4perl.conf' );
 my $log = Log::Log4perl->get_logger();
 

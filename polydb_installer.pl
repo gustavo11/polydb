@@ -1,11 +1,6 @@
 #!/usr/bin/env perl
 
-# Todo: library that Im using to validate the configuration file variables is not accepting an extra space in the dataset name. 
-# TODO: The value psql_bin_dir has to be bin directory of psql. If the user use a directory containing a link to psql, this does not work
-# Check if I provide this information in the manual 
-# TODO: Add in the manual the info of how to install in a MacOS (use home brewer)
-# TODO: create default values for: psql_port, psql_bin_dir, psql_database_name, apache_user
-
+# TODO: Javascript to validate form
 
 use strict;
 
@@ -203,12 +198,16 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		# Host dependent variables
 		
 		psql_bin_dir => {
-			type    => 'directory',
+			type    => 'string',
 		},
 		
 		
 		psql_port => {
-			type    => 'integer',
+			type    => 'string',
+			default => 5432,
+			
+			# Only numbers or empty value
+			regex => '[0-9]*'
 		},
 		
 		
@@ -259,6 +258,7 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		# to the Apache user and then the web-fron end can access polydb database
 		apache_user => {
 			type    => 'string',
+			default => ''
 		},
 		
 		html_base => {
@@ -406,7 +406,8 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 	my %p = %{$hashRef};
 	
 	
-	# Remove trailing slash from all paths
+	# Remove trailing slash from all paths	
+	$p{psql_bin_dir} =~ s/\/$//;
 	
 	# Adding some additional values to %p hash
 	$p{polydb_template} = $polydb_home . '/template';
@@ -443,6 +444,27 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 	
 	###################################################################
 	# Some additional validation of the config parameters
+	
+	# Veryfing if postgres_dir exists and contains psql and vacuum comands
+	if( $p{psql_bin_dir} ne '' ){
+		# Does it exists ?
+		if( ! -d $p{psql_bin_dir} ){
+			$log->fatal( "Invalid value on configuration file: postgres_dir = '". $p{psql_bin_dir} . "'. This directory does not exist!" );
+			exit(1);
+		}
+
+		# Does it contain a psql command	
+		if( ! -e $p{psql_bin_dir} . "/psql"  ){
+			$log->fatal( "Invalid value on configuration file: postgres_dir = '". $p{psql_bin_dir} . "'. This directory does not have the required file 'psql' !" );
+			exit(1);
+		}
+		# Does it contain a vacuum command	
+		if( ! -e $p{psql_bin_dir} . "/vacuumdb"  ){
+			$log->fatal( "Invalid value on configuration file: postgres_dir = '". $p{psql_bin_dir} . "'. This directory does not have the required file 'vacuumdb'!" );
+			exit(1);
+		}
+		
+	}
 	
 	# Veryfing if all necessary variables associated to 'enable_jbrowse = 1'
 	# were defined in the config file
