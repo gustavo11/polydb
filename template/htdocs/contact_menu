@@ -48,11 +48,11 @@ else return false;
 function process() {
 setCookie("emailsent", "true");
 with (document.Mail) {
-if (Subject.selectedIndex == 1) action = "mailto:gcerqueira@som.umaryland.edu;cjaco002@umaryland.edu?subject=Comment";
-else if (Subject.selectedIndex == 2) action = "mailto:gcerqueira@som.umaryland.edu;cjaco002@umaryland.edu?subject=Question";
-else if (Subject.selectedIndex == 3) action = "mailto:gcerqueira@som.umaryland.edu;cjaco002@umaryland.edu?subject=Suggestion";
-else if (Subject.selectedIndex == 4) action = "mailto:gcerqueira@som.umaryland.edu?subject=Bug";
-else action = "mailto:gcerqueira@som.umaryland.edu;cjaco002@umaryland.edu?subject=Other";
+if (Subject.selectedIndex == 1) action = "mailto:[% ADMIN_MAIL %]?subject=Comment";
+else if (Subject.selectedIndex == 2) action = "mailto:[% ADMIN_MAIL %]?subject=Question";
+else if (Subject.selectedIndex == 3) action = "mailto:[% ADMIN_MAIL %]?subject=Suggestion";
+else if (Subject.selectedIndex == 4) action = "mailto:[% ADMIN_MAIL %]?subject=Bug";
+else action = "mailto:[% admin_mail %]?subject=Other";
    }
 }
 function formCheck() {

@@ -21,6 +21,7 @@ my $usage = "\ngenerate_contants_file.pl \n" .
 	    "\t--url <url base and port (port optional). Ex.: timneh.broadinstitute.org:8080/polydb  > \n" .
 	    "\t--htdocs_base <htdocs base. Ex.: /seq/gscidA/www-public/htdocs/polydb > \n" .
 	    "\t--cgibin_internal_htdocs. This is a flag indicating that cgi-bin (Script is internal to htdocs\n".
+	    "\t--admin_mail. Administrator's email\n".
 	    "\t\t If thats not the case, for example, if cgi-bin is a subdirectory of /usr/lib, than please ommit this flag\n" . 
 	    "\t--out <output file> \n" .
             "\t[--locus_id_ex<locus id example. Ex.: orf19.6115 >]\n\n";
@@ -39,6 +40,7 @@ my $p_host;
 my $p_url_base;
 my $p_htdocs_base;
 my $p_cgibin_internal_htdocs;
+my $p_admin_mail;
 my $p_out;
 my $p_locus_id_example;
 
@@ -51,6 +53,7 @@ GetOptions(	'polydb_home=s'			=> \$p_polydb_home,
 		'url=s'				=> \$p_url_base,
 		'htdocs_base=s'			=> \$p_htdocs_base, 
 		'cgibin_internal_htdocs'	=> \$p_cgibin_internal_htdocs,
+		'admin_mail=s'	=> \$p_admin_mail,
 		'out=s'				=> \$p_out, 
 		'locus_id_ex:s'			=> \$p_locus_id_example 
 		
@@ -100,6 +103,12 @@ if( not defined($p_htdocs_base) ){
 	die $usage;	
 }
 
+if( not defined($p_admin_mail) ){
+	print STDERR "--admin_mail parameter is required!\n\n";
+	die $usage;	
+}
+
+
 if( not defined($p_out) ){
 	print STDERR "--out parameter is required!\n\n";
 	die $usage;	
@@ -136,6 +145,10 @@ if( $p_cgibin_internal_htdocs ){
  $cgibin_url = "$p_host/cgi-bin/polydb/$p_table_name";
 }
 
+
+# Escaping @ in the email address. TemplateToolkit doesn't seem to like it
+$p_admin_mail =~ s/@/\\@/;
+
 my $out = <<STR_OUT;
 package CASA;
 
@@ -146,9 +159,9 @@ use lib '$p_perl_lib';
 \$SPECIES = "$p_species_full_name"; # Example: "Candida albicans";
 \$EXAMPLE_LOCUS_ID = "$p_locus_id_example";
 
-\$HTDOCS			= "$p_htdocs_base/\$ORG_DIR";
+\$HTDOCS				= "$p_htdocs_base/\$ORG_DIR";
 \$TEMPLATE_DIR 			= "\$HTDOCS";
-\$WEB_SERVER_AND_PORT		= "$p_url_base/\$ORG_DIR";
+\$WEB_SERVER_AND_PORT	= "$p_url_base/\$ORG_DIR";
 \$GENOMEVIEW_URL   		= "$p_url_base/\$ORG_DIR/genomeview";
 
 \$URL_base_dump_file = "http://\$WEB_SERVER_AND_PORT/results";
@@ -158,13 +171,16 @@ use lib '$p_perl_lib';
 
 # Database 
 \$DB			= "$p_db_name";
-\$DB_SERVER 		= "$p_db_host";
+\$DB_SERVER 	= "$p_db_host";
 \$DB_PORT 		= "$p_db_port";
 \$DSN			= "$DSN";
 \$DB_USER 		= "$p_db_user";
-\$DB_PASSWORD 		= "";
+\$DB_PASSWORD 	= "";
 \$DB_TABLE 		= "$p_table_name_sorted"; # Example: "candida_sorted" 
-		
+
+# Admin mail
+\$ADMIN_MAIL 	= "$p_admin_mail";
+
 # Calls to R statistics package will be allowed (1) or not (0)
 \$R_ANALYSIS 	= 1;
 

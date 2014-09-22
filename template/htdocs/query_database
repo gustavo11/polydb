@@ -1,6 +1,6 @@
 
 <div class="article">
- 	<h2><span>Query</a></span></h2><html><br>
+ 	<h2><span>Query database</a></span></h2><html><br>
 
 <script type="text/javascript" src="http://[% WEB_SERVER_AND_PORT %]/javascript/jquery-1.11.1.min.js"></script> 
 <script type="text/javascript" src="http://[% WEB_SERVER_AND_PORT %]/javascript/genotype_equations.parser.js"></script>

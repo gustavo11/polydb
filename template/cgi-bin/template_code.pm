@@ -102,6 +102,9 @@ $template_vars->{WEB_SERVER_AND_PORT} = $CASA::WEB_SERVER_AND_PORT;
 $template_vars->{SPECIES} = $CASA::SPECIES;
 $template_vars->{DB_TABLE} = $CASA::DB_TABLE;
 
+# Admin mail
+$template_vars->{ADMIN_MAIL} = $CASA::ADMIN_MAIL;
+
 # Add CGI vars dump to template vars
 $template_vars->{userInputsFromHtmlForm} = $userInputFromHtmlForm;
 #####################################################

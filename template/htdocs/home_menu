@@ -1,50 +1,5 @@
 <div class="article">
-<h1>Welcome to PolyDB</h1>
-<p><p>
-A database of polymorphic sites ....
-
-    
-<p><p>
+ 	<h2><span>Home</a></span></h2><html>
+	...
 
 </div>
-
- </div> <!-- /content -->
- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<body>
-       <!-- Right column -->
-        <div id="col" class="noprint">
-            <div id="col-in">
-
-                <hr class="noscreen" />
-
-                <!-- Help us help you! -->
-
-                <hr class="noscreen" />
-
-                <!-- FAQ -->
-                <h3><span>F.A.Q.</span></h3>
-
-                <ul id="archive">
-                   <li><a href="support_menu.cgi">How do I retrieve data?</a></li>
-                    <li><a href="support_menu.cgi">What kind of analyses are readily available?</a></li>
-		    <li><a href="support_menu.cgi">What can be expected in future versions of this website?</a></li>
-                </ul>
-
-                <hr class="noscreen" />
-
-                <!-- Links -->
-                <h3><span>Links</span></h3>
-
-                <ul id="links">
-                    <li><a href="http://www.broadinstitute.org/">Broad Institute</a></li>
-		 [% IF DB_SITE_INFO == 1 %]  
-                    <li><a href="/templates/casa/README">PolyDB site map</a></li>
-                    <li><a href="/templates/casa/arc3_db_schema_latest.pdf">PolyDB schema</a></li>
-                [% END %]
-                </ul>
-
-                <hr class="noscreen" />
-            
-            </div> <!-- /col-in -->
-        </div> <!-- /col -->
-

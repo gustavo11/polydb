@@ -230,6 +230,10 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		R_exe => {
 			type    => 'string'
 		},
+
+		admin_mail => {
+			type    => 'string'
+		},
 		
 		##############################
 		# Dataset/Organism specific variables
@@ -617,6 +621,7 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 			'--url', $p{url}, 
 			'--htdocs_base', $p{html_base},
 			'--cgibin_internal_htdocs', $cgibin_internal_htdocs,
+			'--admin_mail', $p{admin_mail},
 			'--out', $cgibin_root . '/casa_constants.pm' ] , 
 			"Unable to generate constants file: " . $cgibin_root . "/generate_constants_file.pl ",
 			{ vcf_pm_dir => $p{vcf_pm_dir} }
@@ -633,6 +638,7 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 			'--host', $p{host}, 
 			'--url', $p{url}, 
 			'--htdocs_base', $p{html_base},
+			'--admin_mail', $p{admin_mail},			
 			'--out', $cgibin_root . '/casa_constants.pm' ] , 
 			"Unable to generate constants file: " . $cgibin_root . "/generate_constants_file.pl ",
 			{ vcf_pm_dir => $p{vcf_pm_dir} }
@@ -656,6 +662,7 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		'--host', $p{host}, 
 		'--url', $p{url}, 
 		'--htdocs_base', $p{html_base},
+		'--admin_mail', $p{admin_mail},					
 		'--out', './casa_constants_for_installer.pm' ] , 
 		"Unable to generate constants file: ./generate_constants_file.pl ",
 		{ vcf_pm_dir => $p{vcf_pm_dir} }

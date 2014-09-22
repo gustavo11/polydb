@@ -145,7 +145,6 @@ html>body tbody.scrollContent td + td + td {
 <!-- Main -->
 <div id="main" class="box">
     <!-- Header -->
-    <p align="right"> <b>user: </b> [% current_user %]  <span style="padding-left:20px"><b><a href=http://logout:logout@[% WEB_SERVER_AND_PORT %]/logout/logout.html>logout</a></b></span></p>
     <div id="header">
         <!-- Logotyp -->
         <h1 id="logo"><a STYLE="text-decoration:none" href="home_menu.cgi" title="PolyDB home"><bold><font size=90%>PolyDB - <i>[% SPECIES %]</i> </font></bold></h1>
@@ -189,13 +188,7 @@ html>body tbody.scrollContent td + td + td {
             [% ELSE %]
                 <li><a href="contact_menu.cgi">Contact us<span class="tab-l"></span><span class="tab-r"></span></a></li>
             [% END %]
-                
-            [% IF tab_state == 'References' %]
-                <li id="active"><a href="references_menu.cgi">References<span class="tab-l"></span><span class="tab-r"></span></a></li>
-            [% ELSE %]
-            <li><a href="references_menu.cgi">References<span class="tab-l"></span><span class="tab-r"></span></a></li>
-            [% END %]
-                        
+                	                        
             </ul>
 
         <hr class="noscreen" />
