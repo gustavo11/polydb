@@ -11,6 +11,7 @@ use Vcf;
 use VCFDB;
 use Data::Dumper;
 use strict;
+use IPCHelper;
 use IO::Handle;
 use Carp;
 use casa_constants_for_installer;
@@ -50,23 +51,23 @@ $SIG{__DIE__} = sub {
 };
 
 my $usage = "\nvcf2query.pl <vcf file list> <project name> <use genomeview 0|1> <use jbrowse 0|1> <generate boxplot 0|1> \n" .
-            " <add column with full annotation when dumping 0|1 > \n\n";
+            " <add column with full annotation when dumping 0|1 > <full path to R executable> \n\n";
 
-die $usage if ( scalar(@ARGV) != 6 );
+die $usage if ( scalar(@ARGV) != 7 );
 
-my $vcf_file_list 	= $ARGV[0];
-my $project_name  	= $ARGV[1];
-my $genomeview   	= $ARGV[2];
-my $jbrowse	   	= $ARGV[3];
-my $boxplot       	= $ARGV[4];
+my $vcf_file_list 		= $ARGV[0];
+my $project_name  		= $ARGV[1];
+my $genomeview   		= $ARGV[2];
+my $jbrowse	   			= $ARGV[3];
+my $boxplot 	      	= $ARGV[4];
 my $dump_full_annot 	= $ARGV[5];
+my $R_exe				= $ARGV[6];
 
 
 # Connect to DB
 my $dbh;
 
 $dbh = DBI->connect($CASA::DSN, $CASA::DB_USER, $CASA::DB_PASSWORD) or die "Couldn't connect to $CASA::DB using string $CASA::DSN as $CASA::DB_USER\n" . DBI->errstr;  		
-
 
 
 ##############################################################
@@ -288,9 +289,9 @@ HTML
   <BR><BR>
   <span style="font-family: Arial,Helvetica,sans-serif;">Coordinates:</span><BR> 
   <span style="font-family: Arial,Helvetica,sans-serif;">from</span>
-  <input name="chrom_coord_start" onkeyup='OnChromCoordStartChange(this.form.chrom_coord_start);'>
+  <input name="chrom_coord_start" type="number">
   <span style="font-family: Arial,Helvetica,sans-serif;">to</span>
-  <input name="chrom_coord_end">
+  <input name="chrom_coord_end" type="number">
   <BR>
   <BR>
   
@@ -333,7 +334,7 @@ HTML
     <option value="lower_than"> &lt; </option>
     <option value="lower_than_or_equal"> &le; </option>
   </select>
-  <input name="thre_one_diff_reference">
+  <input name="thre_one_diff_reference" type="number">
   AND
   <select name="operator_two_diff_reference">
     <option value="greater_than"> &gt; </option>
@@ -341,7 +342,7 @@ HTML
     <option value="lower_than"> &lt; </option>
     <option value="lower_than_or_equal"> &le; </option>
   </select>
-  <input name="thre_two_diff_reference">
+  <input name="thre_two_diff_reference" type="number">
  <BR>
  <BR>
  <BR>
@@ -378,10 +379,15 @@ HTML
 
   Genotype equation:<br>
   <textarea rows="5" cols="60" name="genotype_equation"></textarea>
+
+  <div id="ge_error_border">
+  <span id="ge_info" style="color:red"></span>
+  <pre id="ge_error" style="font-size: 13px"></pre>
+  </div>
+
   <BR>
-  <BR> 
   
-  <input name="Submit" value="Submit query!" type="submit">
+  <input name="Submit" value="Submit query!" type="submit">  
   <BR>
   <BR>
 
@@ -408,7 +414,7 @@ HTML
     <option value="lower_than"> &lt; </option>
     <option value="lower_than_or_equal"> &le; </option>
   </select>
-  <input name="thre_one_qual">
+  <input name="thre_one_qual" type="number">
   AND
   <select name="operator_two_qual">
     <option value="greater_than"> &gt; </option>
@@ -416,7 +422,7 @@ HTML
     <option value="lower_than"> &lt; </option>
     <option value="lower_than_or_equal"> &le; </option>
   </select>
-  <input name="thre_two_qual">
+  <input name="thre_two_qual" type="number">
  <BR>
  $qual_sample_check_box
  <BR>			   
@@ -484,7 +490,7 @@ HTML
 		#	'String'    => "varchar(255)"
 
 		if ( $category eq "INFO" || $category eq "FORMAT" || $category eq "FIXED" ) {
-			if ( $type eq 'Integer' || $type eq 'Float' ) {
+			if ( $type eq 'Integer'  ) {
 
 				$html_out .= <<HTML;
   <!-- $name-->
@@ -498,7 +504,7 @@ HTML
     <option value="lower_than"> &lt; </option>
     <option value="lower_than_or_equal"> &le; </option>
   </select>
-  <input name="thre_one_$name">
+  <input name="thre_one_$name" type="number">
   AND
   <select name="operator_two_$name">
     <option value="greater_than"> &gt; </option>
@@ -506,10 +512,36 @@ HTML
     <option value="lower_than"> &lt; </option>
     <option value="lower_than_or_equal"> &le; </option>
   </select>
-  <input name="thre_two_$name">
+  <input name="thre_two_$name" type="number">
  <BR>		
 HTML
 
+			}elsif( $type eq 'Float' ){
+					
+$html_out .= <<HTML;
+  <!-- $name-->
+  <span style="font-family: Arial,Helvetica,sans-serif;">$name</span><BR>
+  <span style="font-family: Arial,Helvetica,sans-serif; font-size : 11px">$desc</span><BR>
+
+  <select name="operator_one_$name">
+    <option value="equals_to"> = </option>
+    <option value="greater_than"> &gt; </option>
+    <option value="greater_than_or_equal"> &ge; </option>
+    <option value="lower_than"> &lt; </option>
+    <option value="lower_than_or_equal"> &le; </option>
+  </select>
+  <input name="thre_one_$name" type="number">
+  AND
+  <select name="operator_two_$name">
+    <option value="greater_than"> &gt; </option>
+    <option value="greater_than_or_equal"> &ge; </option>
+    <option value="lower_than"> &lt; </option>
+    <option value="lower_than_or_equal"> &le; </option>
+  </select>
+  <input name="thre_two_$name" type="number">
+ <BR>		
+HTML
+				
 			}
 			elsif ( $type eq 'Character' || $type eq 'String' ) {
 
@@ -1308,6 +1340,7 @@ HTML
 
 sub generate_sample_check_boxes {
 	my ( $sample_list_arr_ref, $field_name, $field_type, $field_id ) = @_;
+	
 
 	my $html = <<HTML;
 <BR>
@@ -1333,7 +1366,13 @@ HTML
 		my $sample_num  = $cont_samples;
 		my $checked     = "CHECKED";
 		my $sample_field      =  $field_id . "[" . $sample_num . "]";
-		my $box_plot_img      = "box_plot." . $project_name . "." . $sample_field . ".png";
+		
+		# Removing characters from field that could possibly create problems
+		# when using it to name files
+		my $file_system_friendly_field = $sample_field;
+		$file_system_friendly_field =~ s/[\[\]]/_/g;
+		
+		my $box_plot_img      = "box_plot." . $project_name . "." . $file_system_friendly_field . ".png";
 		my $box_plot_dir      = "http://$CASA::WEB_SERVER_AND_PORT/images";
 		my $box_plot_path     = $box_plot_dir . "/" . $box_plot_img;
 
@@ -1344,6 +1383,7 @@ HTML
 #		              $sample_name 
 #		              </option> -->
 #HTML
+
 
 		
 		
@@ -1392,9 +1432,14 @@ HTML
 sub boxplot {
 	my ( $project_name, $field ) = @_;
 	
-	print STDERR "Generating box plot for field \'$field\'...\n";
+	$log->info("Generating box plot for field \'$field\'...\n");
+	
+	# Removing characters from field that could possibly create problems
+	# when using it to name files
+	my $file_system_friendly_field = $field;
+	$file_system_friendly_field =~ s/[\[\]]/_/g;
 
-	my $filename_base = "box_plot." . $project_name . "." . $field;
+	my $filename_base = "box_plot." . $project_name . "." . $file_system_friendly_field;
 	my $path          = $CASA::TEMPLATE_DIR . "/images/";
 	my $R_script_file = $path . $filename_base . ".R";
 	my $query_result  = $path . $filename_base . ".txt";
@@ -1441,8 +1486,6 @@ sub boxplot {
 	# Return if there is no valid values on this field
 	return 0 if $num_records == 0;
 
-	# prints name of query result file
-	# print OUTFILE "/home/gcerqueira/local/apache2/htdocs/templates/casa/results/$query_result\n";
 	# prints out the R code for the script
 	print OUTFILE "polydb_data<-read.table(\"$query_result\")\;\n";
 	print OUTFILE "attach(polydb_data)\;\n";
@@ -1451,18 +1494,14 @@ sub boxplot {
 	print OUTFILE "par(mar=c(0,2,0,0))\;\n";
 	print OUTFILE "boxplot(V1,data=V1,outline=FALSE)\;\n";
 
-   #print OUTFILE "hist(V1, col=\"azure3\", main=\"Distribution of Age\", xlab=\"Age\", ylab=)\;\n";
 	print OUTFILE "dev.off()\;\n";
 	close OUTFILE;
 
-	# utilizes R to generate plot
-	`R --no-save < $R_script_file`;
-	
+	# Uses R to generate plot
+	IPCHelper::RunCmd( [ $R_exe, '--no-save', '<', $R_script_file ] , "Unable to generate boxplot for for field \'$field\'" );
+	#IPCHelper::RunCmd( [ $R_exe , '--version' ] , "Unable to generate boxplot for for field \'$field\'" );
 	return $num_records;
 
-#`cp /home/gcerqueira/local/apache2/cgi-bin/casa/polydb_hist_analysis.$sid.png /home/gcerqueira/local/apache2/htdocs/templates/casa/results/arc3_hist_analysis.$sid.png`;
-#print "Done first boxplot!\n";
-#getc();
 }
 
 	

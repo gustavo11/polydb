@@ -1,12 +1,15 @@
 package GenotypeEquations;
 use strict;
 
-#use lib "/seq/aspergillus1/gustavo/usr/lib/lib/site_perl/5.10.1/x86_64-linux-thread-multi";
 use Algorithm::Combinatorics qw(combinations);
-#use Math::Combinatorics;
 
 sub expand {
 	my ($genotype_equation) = @_;
+	
+	# Convert S0 to s0 and REF to ref
+	$genotype_equation =~ s/S(\d+)/s$1/g;
+	$genotype_equation =~ s/REF/ref/g;
+	
 
 	# Continuous expansion
 	$genotype_equation =~
@@ -67,19 +70,7 @@ sub continuous_expansion {
 			$out =~ s/AND $/\) OR \( /;
 		}
 		$out =~ s/OR \( $/\)/;
-		
-#		my $combinat = Math::Combinatorics->new(count => $arranjo,
-#                                          data => [@items],
-#                                         );
-#                                         
-#        while(my @combo = $combinat->next_combination){
-#			for my $si ( @combo ) {
-#				$out .= "$operand1 $operator s$si AND ";
-#			}
-#			$out =~ s/AND $/\) OR \( /;
-#		}
-#		$out =~ s/OR \( $/\)/;
-		
+				
 	}
 
 	return "$out";

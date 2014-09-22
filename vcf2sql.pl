@@ -3,8 +3,9 @@
 use FindBin;
 use lib "$FindBin::Bin";
 
-use lib $ENV{cgibin_root};
 use lib $ENV{vcf_pm_dir};
+use lib $ENV{cgibin_root};
+
 
 use DBI;
 use Vcf;
@@ -52,6 +53,8 @@ $SIG{__DIE__} = sub {
 };
 
 my $usage = "vcf2sql.pl <1 = keep invariant sites;0 = disregard those> <vcf file list> <project name>";
+
+
 
 $log->logexit( $usage ) if ( scalar(@ARGV) != 3 );
 

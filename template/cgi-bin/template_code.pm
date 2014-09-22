@@ -98,9 +98,6 @@ $template_vars->{CSS_BASE_DIR} = $CASA::CSS_BASE_DIR;
 # Add web server and port
 $template_vars->{WEB_SERVER_AND_PORT} = $CASA::WEB_SERVER_AND_PORT;
 
-# Add CGI base URL
-$template_vars->{WEB_SERVER_AND_PORT} = $CASA::WEB_SERVER_AND_PORT;
-
 # Add species
 $template_vars->{SPECIES} = $CASA::SPECIES;
 $template_vars->{DB_TABLE} = $CASA::DB_TABLE;

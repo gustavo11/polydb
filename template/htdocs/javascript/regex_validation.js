@@ -1,39 +1,43 @@
-function validate_required(field,alerttxt)
-{
-with (field)
-  {
-  if (value==null||value=="")
-    {
-    alert(alerttxt);return false;
-    }
-  else
-    {
-    return true;
-    }
-  }
+function lineWithError(e, equation) {
+    if( e.line !== undefined && e.column !== undefined ){    	
+    	var lines = equation.split("\n");    	
+    	return lines[ e.line - 1  ] + '\n' +Array(e.column).join(" ") + '^';    	    	
+    }else{
+    	return '';
+    }        
 }
 
-function validate_form(thisform)
-{
-with (thisform)
-  {
 
-  if (validate_required(seq_file,"You must upload a sequence file")==false)
-  {seq_file.focus();return false;}
-  
-  if (validate_required(regex,"You must fill in a regular expression")==false)
-  {regex.focus();return false;}
-  
-  if (validate_required(qual_file,"You must upload a quality file")==false)
-  {qual_file.focus();return false;}
-
-  if( ref_file.value == "" && refseq_db.value == "no_selection" ){
-  	alert("You must either upload a reference sequence file or chose a reference sequence database");
-  	ref_file.focus();
-  	return false;
-  }	
-  
-  return true;
-
-  }
+function errorInfo(e) {
+    if( e.line !== undefined && e.column !== undefined ){
+    	return 'Error on:'    	    	
+    }else{
+    	return 'Unrecognizable genotype equation!';
+    }        
 }
+
+
+
+jQuery(document).ready(function() {
+
+// Validate genotype equation
+jQuery("#query_db").submit(function( event ) {
+	
+	  var equation = jQuery('textarea[name=genotype_equation]').val(); 
+	  try {
+		    // Using PEG.js to validate equation
+		    peg_genotype_equation.parse(equation)
+		    
+	  }catch(err) {
+		  	jQuery('#ge_info').text(errorInfo(err));
+		    jQuery('#ge_error').html(lineWithError(err,equation));
+		    jQuery('#ge_error_border').css({"border-style":"solid","border-color": "red", "border-width": "2px", "background-color":"#FFD6D6"});
+		    jQuery('textarea[name=genotype_equation]').focus();
+		    event.preventDefault();
+		    return false;
+	  }
+	  return true;
+});
+
+   
+});

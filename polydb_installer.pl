@@ -227,6 +227,10 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 			type    => 'string'
 		},
 		
+		R_exe => {
+			type    => 'string'
+		},
+		
 		##############################
 		# Dataset/Organism specific variables
 		
@@ -465,6 +469,11 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		}
 		
 	}
+	
+	# If R_exe is empty the R executable in the PATH will be used
+	if( $p{R_exe} eq '' ){
+		$p{R_exe} = 'R';
+	} 
 	
 	# Veryfing if all necessary variables associated to 'enable_jbrowse = 1'
 	# were defined in the config file
@@ -1070,7 +1079,8 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		$p{enable_genomeview},
 		$p{enable_jbrowse},
 		1,
-		0 ],
+		0,
+		$p{R_exe} ],
 		'Unable to generate database-specific html files for the web front end',
 		{ cgibin_root => $cgibin_root, vcf_pm_dir => $p{vcf_pm_dir} },
 		$IPC_verbose );

@@ -16,6 +16,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>cgi-bin</name>
+			<type>2</type>
+			<location>/usr/local/var/apache2/cgi-bin</location>
+		</link>
+		<link>
 			<name>htdocs</name>
 			<type>2</type>
 			<location>/usr/local/var/www/htdocs</location>

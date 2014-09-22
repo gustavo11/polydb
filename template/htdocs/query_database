@@ -2,11 +2,13 @@
 <div class="article">
  	<h2><span>Query</a></span></h2><html><br>
 
+<script type="text/javascript" src="http://[% WEB_SERVER_AND_PORT %]/javascript/jquery-1.11.1.min.js"></script> 
+<script type="text/javascript" src="http://[% WEB_SERVER_AND_PORT %]/javascript/genotype_equations.parser.js"></script>
+<script type="text/javascript" src="http://[% WEB_SERVER_AND_PORT %]/javascript/regex_validation.js"></script>
 
 
-<script src="/templates/casa/javascript/regex_validation.js" type="text/javascript"></script>
 
-<form data-parsley-validate action="[% cgi_base_dir %]/execute_query.cgi" method="post" enctype="multipart/form-data" onsubmit="return validate_form(this)">  
+<form id="query_db" action="[% cgi_base_dir %]/execute_query.cgi" method="post" enctype="multipart/form-data">  
   <input name="Submit" value="Submit query!" type="submit">
   <BR>
   <BR>
