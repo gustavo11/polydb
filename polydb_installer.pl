@@ -20,6 +20,8 @@ use Log::Log4perl;
 use DBI;
 use VCFDB;
 use Utils;
+use Text::Markdown;
+use File::Slurp;
 
 #polydb_installer.pl --config <configuration file> [--skip_warning] [--help] [ --jump_to < CALCULATING_SIZE_VCF_FILES | REMOVING_INVARIANT_SITES | GENERATING_SQL | INSERT_RECORDS | UPDATE_RECORDS | ANNOTATE_VCF | SORT_TABLE | POST_PROCESS_DB | CHECKING_DB | CREATING_WEB_FRONT_END | PREPARING_GENOME_BROWSER | FINAL_ARRANGEMENTS > ]
 
@@ -234,7 +236,16 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		admin_mail => {
 			type    => 'string'
 		},
+
+		fp_content => {
+			type    => 'string'
+		},
+
+		supp_content => {
+			type    => 'string'
+		},
 		
+				
 		##############################
 		# Dataset/Organism specific variables
 		
@@ -478,6 +489,14 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 	if( $p{R_exe} eq '' ){
 		$p{R_exe} = 'R';
 	} 
+	
+	if( $p{fp_content} eq '' ){
+		$p{fp_content} = $p{polydb_template} . '/markdown/fp.md';
+	}
+
+	if( $p{supp_content} eq '' ){
+		$p{supp_content} = $p{polydb_template} . '/markdown/supp.md';
+	}
 	
 	# Veryfing if all necessary variables associated to 'enable_jbrowse = 1'
 	# were defined in the config file
@@ -1101,6 +1120,11 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 	
 	$cmd = "cp " . $sorted_dataset . "_back_end.pm $cgibin_root/DatabaseSpecificBackEnd.pm";
 	IPCHelper::RunCmd( $cmd , "Unable to copy file" );
+
+	# Generating the content of the front page and support page
+	# from Markdown files provided by the user	
+	generate_web_content($p{fp_content}, $p{html_root} . '/fp.html' );
+	generate_web_content($p{supp_content}, $p{html_root} . '/supp.html' );
 	
 	
 	################################################################################
@@ -1256,6 +1280,25 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		}
 		close(FILE);
 		return $num_lines;
+	}
+	
+	# - Receive path to markdown text
+	# - Generates HTML content from it
+	# - And save content on the path receive as parameter
+	sub generate_web_content{
+		my ($md_src,$html_dest) = @_;
+		
+   		my $md = Text::Markdown->new;
+   		
+   		
+   		my $text =  read_file("$md_src");
+   		$log->fatal("Unable to open file \'$md_src\;") if not defined($text);
+				   		
+    	my $html = $md ->markdown($text);
+    	
+   		$log->fatal("Unable to open file \'$html_dest\;") if not defined( write_file($html_dest,$html) );
+   		
+    	    	
 	}
 	
 	

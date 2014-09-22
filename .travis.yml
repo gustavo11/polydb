@@ -30,7 +30,8 @@ install:
   - cpanm IPC::Run
   - cpanm URI::Escape
   - cpanm DB_File
-
+  - cpanm Text::Markdown
+  - cpanm File::Slurp
 
 # Use this to prepare your build for testing
 # e.g. copy database configurations, environment variables, etc.

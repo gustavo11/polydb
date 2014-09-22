@@ -1,5 +1,4 @@
 <div class="article">
  	<h2><span>Home</a></span></h2><html>
-	...
-
+	    [% INCLUDE fp.html %]
 </div>
