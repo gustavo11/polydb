@@ -1,6 +1,6 @@
 <div class="article">
 	<h2><span>Suport</a></span></h2><html>
-	  [% INCLUDE supp.html %]
+	  [% INCLUDE custom_support.html %]
 </div>
 
 

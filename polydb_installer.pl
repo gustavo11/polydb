@@ -237,11 +237,11 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 			type    => 'string'
 		},
 
-		fp_content => {
+		home_html_content => {
 			type    => 'string'
 		},
 
-		supp_content => {
+		support_html_content => {
 			type    => 'string'
 		},
 		
@@ -490,12 +490,12 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 		$p{R_exe} = 'R';
 	} 
 	
-	if( $p{fp_content} eq '' ){
-		$p{fp_content} = $p{polydb_template} . '/markdown/fp.md';
+	if( $p{home_html_content} eq '' ){
+		$p{home_html_content} = $p{polydb_template} . '/custom_html_content/home.md';
 	}
 
-	if( $p{supp_content} eq '' ){
-		$p{supp_content} = $p{polydb_template} . '/markdown/supp.md';
+	if( $p{support_html_content} eq '' ){
+		$p{support_html_content} = $p{polydb_template} . '/custom_html_content/support.md';
 	}
 	
 	# Veryfing if all necessary variables associated to 'enable_jbrowse = 1'
@@ -1123,8 +1123,8 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 
 	# Generating the content of the front page and support page
 	# from Markdown files provided by the user	
-	generate_web_content($p{fp_content}, $p{html_root} . '/fp.html' );
-	generate_web_content($p{supp_content}, $p{html_root} . '/supp.html' );
+	generate_web_content($p{home_html_content}, $p{html_root} . '/custom_home.html' );
+	generate_web_content($p{support_html_content}, $p{html_root} . '/custom_support.html' );
 	
 	
 	################################################################################

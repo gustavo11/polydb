@@ -1,4 +1,4 @@
 <div class="article">
  	<h2><span>Home</a></span></h2><html>
-	    [% INCLUDE fp.html %]
+	    [% INCLUDE custom_home.html %]
 </div>
