@@ -67,7 +67,7 @@ d88b.d88b,
 
 
 
-my $debug = 0;
+my $debug = 1;
 my $IPC_verbose = $debug;
 
 
@@ -75,7 +75,7 @@ if( $debug == 1 ){
 	$Carp::Verbose = 1;
 }
 
-my $running_at_broad = 1;
+my $running_at_broad = 0;
 my $upload_full_annotation = 0;
 
 #####################
