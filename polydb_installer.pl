@@ -6,7 +6,7 @@ use strict;
 
 use FindBin;
 use lib "$FindBin::Bin";
-use Parse::PlainConfig;
+use Parse::PlainConfig::Legacy;
 use Config::Validate;
 use IPC::Run;
 use File::System;
@@ -169,8 +169,7 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 	# Config file parsing
 	
 	
-	my $conf = new Parse::PlainConfig;
-	$conf = Parse::PlainConfig->new(
+	my $conf = Parse::PlainConfig::Legacy->new(
 		'PARAM_DELIM'  => '=',
 		'MAX_BYTES'    => 65536,
 		'SMART_PARSER' => 1,
@@ -185,14 +184,14 @@ pod2usage(-verbose => 1 ,-exitval => 2);
 	# Removing trailling space from $config file
 	remove_trailling_spaces( $config_file );
 	
-	
-	
 	my $rv = $conf->read( $config_file );
-	die Parse::PlainConfig::ERROR if $rv == 0;
+	die Parse::PlainConfig::Legacy::ERROR if $rv == 0;
 	
 	# Store all the data structure of config file
 	# in the hash ref $config
-	my $config = $conf->get_ref();
+	#my $config = $conf->get_ref();
+	
+	my $config = convert_to_hash( $conf );
 	
 	
 	my $schema = {
@@ -1299,6 +1298,20 @@ pod2usage(-verbose => 1 ,-exitval => 2);
    		$log->fatal("Unable to open file \'$html_dest\;") if not defined( write_file($html_dest,$html) );
    		
     	    	
+	}
+	
+	sub convert_to_hash{
+		my %hash;
+		my ($conf) = @_;
+		my @keys = $conf->parameters();
+		
+		foreach my $curr_key ( @keys ){
+			#print $curr_key . " = " . $conf->parameter($curr_key) . "\n";
+			#getc();
+			$hash{$curr_key} = $conf->parameter($curr_key);
+		}
+				
+		return \%hash;
 	}
 	
 	
