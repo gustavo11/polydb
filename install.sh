@@ -31,4 +31,4 @@ sudo cpanm DB_File
 sudo cpanm Text::Markdown
 sudo cpanm File::Slurp
 
-#./polydb_installer.pl --config .vm.configuration_file.conf --skip_warning
+sudo ./polydb_installer.pl --config .vm.configuration_file.conf --skip_warning
